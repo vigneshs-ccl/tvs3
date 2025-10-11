@@ -1,0 +1,110 @@
+@use 'sass:list';
+
+// Breakpoints
+$breakpoints: (
+  xs: 0,
+  sm: 576px,
+  md: 768px,
+  lg: 992px,
+  xl: 1200px,
+  xxl: 1400px
+);
+
+// Font definitions
+$fonts: (
+  inter-l: ('Inter', 300),
+  inter-reg: ('Inter', 400),
+  inter-medium: ('Inter', 500),
+  inter-sb: ('Inter', 600),
+  inter-b: ('Inter', 700),
+  roboto-l: ('Roboto', 300),
+  roboto-reg: ('Roboto', 400),
+  roboto-medium: ('Roboto', 500),
+  roboto-sb: ('Roboto', 600),
+  roboto-b: ('Roboto', 700)
+);
+
+// Colors used
+$colors: (
+  "white": #FFFFFF,
+  "off-white": #F7F7F7,
+  "off-white-light": #F5F6FA,
+  "grey-lightest": #D0D0D0,
+  "grey-extra-light": #C9C9C9,
+  "grey-lighter": #BCB4B4,
+  "grey-light": #8D8B91,
+  "grey-medium-light": #8D8D8D,
+  "grey-mid": #5A5A5A,
+  "grey-dark": #666666,
+  "grey-dark-mid": #555555,
+  "black-secondary": #2B2B2B,
+  "black": #1C1C1C,
+  "black-mid": #414141,
+  "black-light": #868686,
+  "purple": #5B2AE3,
+  "violet": #8357FE,
+  "blue": #3360F4,
+  "blue-light": #EAECFE,
+  "lavender": #EFEAFE,
+  "orange": #FFA700,
+  "orange-light": #FFB800,
+  "green": #0FB86E,
+  "red": #FF0000,
+  "blue-transparent": #0000C73B,
+  "black-transparent": #00000029
+);
+
+
+
+// Sizes and line-heights
+$size-line: (
+  12: 15,
+  13: 18, // alternate line-height for size 13
+  14: 17,
+  15: 19,
+  16: 20,
+  18: 21,
+  21: 25
+);
+
+// Base font utility
+@each $font-name, $font in $fonts {
+  $family: list.nth($font, 1);
+  $weight: list.nth($font, 2);
+
+  @each $color-name, $color in $colors {
+    @each $size, $line in $size-line {
+      .text-bs-#{$font-name}-#{$color-name}-#{$size}s-#{$line}l {
+        font-family: $family, sans-serif;
+        font-weight: $weight;
+        font-size: #{$size}px;
+        line-height: #{$line}px;
+        color: $color;
+      }
+    }
+  }
+}
+
+// Responsive utilities
+@each $bp, $bp-value in $breakpoints {
+  @if $bp != xs {
+    @media (min-width: $bp-value) {
+      @each $font-name, $font in $fonts {
+        $family: list.nth($font, 1);
+        $weight: list.nth($font, 2);
+
+        @each $color-name, $color in $colors {
+          @each $size, $line in $size-line {
+            .text-#{$bp}-bs-#{$font-name}-#{$color-name}-#{$size}s-#{$line}l {
+              font-family: $family, sans-serif;
+              font-weight: $weight;
+              font-size: #{$size}px;
+              line-height: #{$line}px;
+              color: $color;
+            }
+          }
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,114 @@
+@use "variables" as *;
+// custom.scss
+@use "sass:map";
+@use "sass:list";
+@use "sass:meta";
+
+:root {
+  @each $name, $color in $colors {
+    --#{$name}: #{$color};
+  }
+}
+
+@each $name, $color in $colors {
+  .text-#{$name} {
+    color: var(--#{$name}) !important;
+  }
+}
+
+@each $name, $color in $colors {
+  .bg-#{$name} {
+    background-color: var(--#{$name}) !important;
+  }
+}
+
+@each $name, $color in $colors {
+  .border-#{$name} {
+    border: 1px solid var(--#{$name}) !important;
+  }
+}
+
+$radius: (
+  sm: 0.25rem,
+  md: 0.5rem,
+  rd-8: 8px,
+  rd-16: 16px,
+);
+
+@each $size, $value in $radius {
+  .border-#{$size} {
+    border-radius: #{$value} !important;
+  }
+}
+
+@each $name, $color in $colors {
+  .border-top-#{$name} {
+    border-top: 1px solid var(--#{$name}) !important;
+  }
+  .border-end-#{$name} {
+    border-right: 1px solid var(--#{$name}) !important;
+  }
+  .border-bottom-#{$name} {
+    border-bottom: 1px solid var(--#{$name}) !important;
+  }
+  .border-start-#{$name} {
+    border-left: 1px solid var(--#{$name}) !important;
+  }
+}
+
+
+$spacings: ();
+@for $i from 0 through 100 {
+  $spacings: list.append($spacings, $i);
+}
+
+$props: (
+  "p-cs": padding,
+  "pe-cs": padding-right,
+  "ps-cs": padding-left,
+  "m-cs": margin,
+  "my-cs": (
+    margin-top,
+    margin-bottom,
+  ),
+  "mx-cs": (
+    margin-left,
+    margin-right,
+  ),
+  "mb-cs": margin-bottom,
+  "me-cs": margin-right,
+  "ms-cs": margin-left,
+);
+
+@each $class, $property in $props {
+  @each $val in $spacings {
+    .#{$class}-#{$val} {
+      @if $property != null and meta.type-of($property) == "list" {
+        @each $subProp in $property {
+          #{$subProp}: #{$val}px;
+        }
+      } @else if $property != null {
+        #{$property}: #{$val}px;
+      }
+    }
+  }
+}
+
+
+.w-h-48 {
+  width: 48px;
+  height: 48px;
+}
+
+.mb-cs-pt-9-6 {
+  margin-bottom: 9.67px;
+}
+.mb-cs-pt-11-6 {
+  margin-bottom: 11.67px;
+}
+.mb-cs-pt-6-6 {
+  margin-bottom: 6.67px;
+}
+.mb-cs-pt-15-5 {
+  margin-bottom:15.5px;
+}

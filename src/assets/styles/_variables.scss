@@ -1,0 +1,87 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&family=Roboto:ital,wght@0,100..900;1,100..900&display=swap');
+
+
+// ----------------------------------
+// Font Families
+// ----------------------------------
+$font-families: (
+  inter: 'Inter',
+  roboto: 'Roboto',
+);
+
+$colors: (
+  'primary': #5b2ae3,
+  'secondary': #8357fe,
+  'success': #0fb86e,
+  'danger': #dc3545,
+  'warning': #ffb800,
+  'info': #17a2b8,
+  'border': #efeafe,
+  'light': #f8f9fa,
+  'dark': #414141,
+  'grey': #8d8d8d,
+  'text-primary': #666666,
+  'text-secondary': #2b2b2b,
+  'text-small': #1c1c1c,
+  'muted': #6c757d,
+  'white': #ffffff,
+
+  'text-secondary-light': #8d8b91,
+  'text-muted-dark': #5a5a5a,
+  'text-muted-light': #868686,
+  'text-grey-clr': #555555,
+
+  'input-border': #c0c0c1,
+  'text-feedback': #5b2ae3,
+);
+
+@each $color-name, $color-value in $colors {
+  .text-#{$color-name} {
+    color: $color-value !important;
+  }
+}
+
+// ----------------------------------
+// Font Weights
+// ----------------------------------
+$font-weights: (
+  l: 300,
+  r: 400,
+  medium: 500,
+  sb: 600,
+  b: 700,
+);
+
+// ----------------------------------
+// Common Font Sizes and Line Heights
+// (Keep only the ones you actually use)
+// ----------------------------------
+$font-sizes: (12, 13, 14, 15, 16, 18, 20, 21, 24, 28, 32, 36, 40);
+$line-heights: (16, 15, 17, 18, 19, 20, 21, 24, 28, 32, 36, 40, 44, 48);
+
+// ----------------------------------
+// Optimized Font + Color Utilities
+// ----------------------------------
+// Generates classes like:
+// .text-bs-inter-md-primary-16s-20l { ... }
+
+@each $family-name, $family-value in $font-families {
+  @each $weight-short, $weight-value in $font-weights {
+    @each $color-name, $color-value in $colors {
+      @each $size in $font-sizes {
+        @each $line in $line-heights {
+          .text-bs-#{$family-name}-#{$weight-short}-#{$color-name}-#{$size}s-#{$line}l {
+            font-family:
+              #{$family-value},
+              sans-serif;
+            font-weight: #{$weight-value};
+            font-size: #{$size}px;
+            line-height: #{$line}px;
+            color: #{$color-value};
+            letter-spacing: 0;
+          }
+        }
+      }
+    }
+  }
+}

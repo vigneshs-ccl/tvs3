@@ -1,0 +1,147 @@
+.login-wrapper {
+  padding-top: 72px;
+  min-height: 60vh;
+  display: flex;
+  align-items: center;
+  background-color: #F1F3F6;
+
+  .login-image {
+    min-height: 70vh;
+  }
+}
+
+.footer-wrapper {
+  padding-top: 32px;
+  padding-bottom: 18px;
+}
+
+.custom-textfield .MuiOutlinedInput-root {
+  height: 58px;
+  align-items: center;
+  border-radius: 8px;
+}
+
+.custom-textfield .MuiInputBase-input {
+  height: 100%;
+  box-sizing: border-box;
+}
+
+.custom-dropdown {
+  border: 1px solid #878787;
+  border-radius: 8px;
+  background-color: #fff;
+  min-width: 160px;
+}
+
+.custom-dropdown .dropdown-menu {
+  border-top-left-radius: 8px;
+  border-top-right-radius: 8px;
+  border-bottom-left-radius: 0;
+  border-bottom-right-radius: 0;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+  border: 1px solid #878787;
+  padding: 0.25rem 0;
+  margin-top: 0;
+  width: 100%;
+  background-color: #fff;
+}
+
+.custom-dropdown .dropdown-item {
+  padding: 5px 16px;
+  width: 100%;
+  font-weight: 500;
+  color: #333;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  border-radius: 8px;
+  transition: background 0.2s ease;
+}
+
+.custom-dropdown.show>.nav-link {
+  border-bottom-left-radius: 0 !important;
+  border-bottom-right-radius: 0 !important;
+}
+
+.custom-dropdown .nav-link {
+  border-radius: 8px;
+  padding: 8px 16px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+  /* make logout and client name match width */
+}
+
+.custom-dropdown .dropdown-item:hover {
+  background-color: #f7f7f7;
+  color: #000;
+
+  border-top-left-radius: 0;
+  border-top-right-radius: 0;
+}
+
+.custom-dropdown.show .dropdown-menu {
+  border-top-left-radius: 0;
+  border-top-right-radius: 0;
+  border-bottom-left-radius: 8px;
+  border-bottom-right-radius: 8px;
+}
+
+.custom-dropdown.show {
+  border-top-left-radius: 8px;
+  border-top-right-radius: 8px;
+  border-bottom-left-radius: 0px;
+  border-bottom-right-radius: 0px;
+}
+
+.btn-payment-maxwidth {
+  width: 100%;
+  max-width: 300pxs;
+}
+
+.btn-payment-minwidth {
+  width: 50%;
+  max-width: 300pxs;
+}
+
+input[type="password"] {
+  padding: 1px 0 !important;
+  /* remove default padding */
+  text-align: center !important;
+  /* center text and placeholder */
+  font-size: 20px !important;
+  /* optional, for visibility */
+}
+
+input[type="password"] {
+  padding: 1px 0 !important;
+  /* remove default padding */
+  text-align: center !important;
+  /* center text and placeholder */
+  font-size: 20px !important;
+  /* optional, for visibility */
+}
+
+.otp-input {
+  width: 100%;
+  border: none;
+  outline: none;
+  text-align: center;
+  font-size: 20px;
+  background-color: transparent;
+  line-height: 0;
+}
+
+// ::-moz-placeholder { /* Mozilla Firefox 19+ */
+//     line-height:600px;
+// }
+// ::-webkit-input-placeholder { /* Webkit */
+//     line-height:600px;
+// }
+// :-ms-input-placeholder { /* IE */
+//     line-height:600px;
+// }
+input[type="password"].otp-input::-webkit-input-placeholder {
+  transform: translateY(3px);
+}

@@ -1,0 +1,90 @@
+@use 'sass:list';
+
+$breakpoints: (
+  xs: 0,
+  sm: 576px,
+  md: 768px,
+  lg: 992px,
+  xl: 1200px,
+  xxl: 1400px
+);
+
+// Only the fonts you actually use
+$used-fonts: (
+  inter-reg: ('Inter', 400),
+  inter-medium: ('Inter', 500),
+  inter-sb: ('Inter', 600),
+  roboto-reg: ('Roboto', 400)
+);
+
+$used-fonts: (
+  inter-bold: ('Inter', 700),
+  inter-medium: ('Inter', 500),
+  inter-semiBold: ('Inter', 600),
+  inter-regular: ('Inter', 400),
+  roboto-regular: ('Roboto', 400)
+);
+
+// Only the colors you actually use
+$used-colors: (
+  'text-primary': #666666,
+  'text-secondary': #2b2b2b,
+  'text-muted-dark': #5a5a5a,
+  'text-muted-light': #868686,
+  'text-feedback': #5b2ae3,
+  'grey': #8d8d8d
+);
+
+// Only sizes/line-heights actually used
+$used-sizes: (12, 13, 15, 16, 18);
+$used-lines: (15, 16, 17, 18, 19, 20, 21);
+
+// ----------------------------------
+// Base (xs) font utilities
+// ----------------------------------
+@each $combo-name, $combo in $used-fonts {
+  $family: list.nth($combo, 1);
+  $weight: list.nth($combo, 2);
+
+  @each $color-name, $color-value in $used-colors {
+    @each $size in $used-sizes {
+      @each $line in $used-lines {
+        .text-bs-#{$combo-name}-#{$color-name}-#{$size}s-#{$line}l {
+          font-family: $family, sans-serif;
+          font-weight: $weight;
+          font-size: #{$size}px;
+          line-height: #{$line}px;
+          color: $color-value;
+        }
+      }
+    }
+  }
+}
+
+// ----------------------------------
+// Responsive font utilities
+// ----------------------------------
+@each $bp, $bp-value in $breakpoints {
+  @if $bp != xs {
+    @media (min-width: $bp-value) {
+      @each $combo-name, $combo in $used-fonts {
+        $family: list.nth($combo, 1);
+        $weight: list.nth($combo, 2);
+
+        @each $color-name, $color-value in $used-colors {
+          @each $size in $used-sizes {
+            @each $line in $used-lines {
+              .text-#{$bp}-bs-#{$combo-name}-#{$color-name}-#{$size}s-#{$line}l {
+                font-family: $family, sans-serif;
+                font-weight: $weight;
+                font-size: #{$size}px;
+                line-height: #{$line}px;
+                color: $color-value;
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}

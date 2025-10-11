@@ -1,0 +1,79 @@
+@use "./variables.scss" as *;
+
+@use 'sass:map';
+
+$button-sizes: (
+  large: (padding: 14.5px 24px,
+    font-size: 16px,
+    line-height: 24px),
+  medium: (padding: 13px 24px,
+    font-size: 14px,
+    line-height: 20px),
+  small: (padding: 10px 24px,
+    font-size: 12px,
+    line-height: 16px)
+);
+
+$bg-names: primary, secondary, tertiary, error, custom, custom-blue, custom-red, on-primary, on-secondary, on-tertiary, on-error, on-custom, on-custom0-container, secondary-gray , primary-blue;
+$text-names: on-primary, on-secondary, on-tertiary, on-error, on-custom, on-custom0-container, primary, secondary, tertiary, error, custom, custom-blue, custom-red, secondary-gray, primary-blue;
+
+@each $bg-name in $bg-names {
+  $bg-color: map.get($colors, $bg-name);
+
+  @each $text-name in $text-names {
+    $text-color: map.get($colors, $text-name);
+
+    @each $size-name, $props in $button-sizes {
+      .btn-bs-#{$bg-name}-#{$text-name}-#{$size-name} {
+        background-color: $bg-color;
+        color: $text-color;
+        padding: map.get($props, padding);
+        font-size: map.get($props, font-size);
+        line-height: map.get($props, line-height);
+        border: 1px solid $bg-color;
+        border-radius: 8px;
+        transition: all 0.2s ease-in-out;
+
+        &:hover,
+        &:focus,
+        &:active {
+          background-color: $bg-color;
+          color: $text-color;
+          box-shadow: 0 0 0 0.15rem rgba($bg-color, 0.3);
+        }
+
+        &:disabled,
+        &.disabled {
+          opacity: 0.6;
+          pointer-events: none;
+        }
+      }
+
+      .btn-bs-outline-#{$bg-name}-#{$text-name}-#{$size-name} {
+        background-color: transparent;
+        color: $text-color;
+        border: 1px solid $bg-color;
+        padding: map.get($props, padding);
+        font-size: map.get($props, font-size);
+        line-height: map.get($props, line-height);
+        border-radius: 8px;
+        font-family: "Lexend";
+
+        &:hover,
+        &:focus,
+        &:active {
+          background-color: $bg-color;
+          color: white !important;
+          box-shadow: 0 0 0 0.1rem rgba($bg-color, 0.1);
+        }
+
+        &:disabled,
+        &.disabled {
+          opacity: 0.6;
+          pointer-events: none;
+          box-shadow: none;
+        }
+      }
+    }
+  }
+}

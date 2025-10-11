@@ -1,0 +1,72 @@
+// SF Pro Display setup
+
+$font-family-sf-pro: "SF Pro Display", sans-serif;
+
+$font-sizes: (
+  h1: 61px,
+  h2: 49px,
+  h3: 39px,
+  h4: 31px,
+  h5: 25px,
+  title: 24px,
+  title1: 20px,
+  title2: 16px,
+  body3: 15px,
+  body: 14px,
+  body2: 13px,
+  caption: 12px,
+  caption-bold: 10px,
+  caption-sm-bold: 5px,
+);
+
+
+$font-weights: (
+  regular: 400,
+  semi-regular: 500,
+  semibold: 590,
+  medium: 600,
+  bold: 700,
+);
+
+// Register font files
+@font-face {
+  font-family: "SF Pro Display";
+  src: url("/fonts/sf-pro-display/SFPRODISPLAYREGULAR.OTF") format("opentype");
+  font-weight: 400;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: "SF Pro Display";
+  src: url("/fonts/sf-pro-display/SFPRODISPLAYBOLD.OTF") format("opentype");
+  font-weight: 700;
+  font-style: normal;
+}
+
+// Font utility classes
+.font-sf-pro {
+  font-family: $font-family-sf-pro;
+}
+
+@each $key, $size in $font-sizes {
+  .fs-#{$key} {
+    font-size: $size !important;
+  }
+}
+
+@each $name, $weight in $font-weights {
+  .fw-#{$name} {
+    font-weight: $weight !important;
+  }
+}
+$font-styles: (
+  "fs-italic": italic,
+  "fs-normal": normal,
+  "fs-oblique": oblique,
+);
+
+@each $class, $style in $font-styles {
+  .#{$class} {
+    font-style: $style;
+  }
+}
