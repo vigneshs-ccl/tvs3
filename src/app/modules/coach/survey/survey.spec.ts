@@ -1,6 +1,6 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { Survey } from './survey';
+import { Survey } from '@app/modules/coach/survey/survey';
 
 describe('Survey', () => {
   let component: Survey;

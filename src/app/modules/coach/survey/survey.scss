@@ -1,17 +1,16 @@
-/* Color tokens (3-5 total) */
+
 :host {
-  --brand: #5b2ae3; /* primary purple */
-  --brand-100: #f3f1ff; /* light purple tint */
-  --brand-200: #e7e3ff; /* subtle purple border */
-  --success: #12b76a; /* compliance green */
+  --brand: #5b2ae3; 
+  --brand-100: #f3f1ff; 
+  --success: #12b76a; 
   --danger-100: #ffefef;
 
   --input-text-clr: #1c1c1c;
 }
 
 .custom-width {
-  max-width: 1250px; /* change as needed */
-  width: 100%; /* ensure it’s responsive */
+  max-width: 1250px; 
+  width: 100%; 
 }
 
 .custom-input {
@@ -139,22 +138,22 @@ hr.dashed {
 }
 
 .custom-width-dialog {
-  max-width: 988px; // fixed width for larger screens
-  width: 90%; // responsive width on smaller screens
-  margin: 1.75rem auto; // vertical margin
+  max-width: 988px; 
+  width: 90%; 
+  margin: 1.75rem auto;
 }
 
 .rating-star-icon {
   width: 15px;
   height: 11px;
   object-fit: contain;
-  margin-bottom: 2px; /* optional for better alignment */
+  margin-bottom: 2px;
 }
 
 // modal styles:
 .custom-modal-spacing {
-  border-radius: 0.8rem !important; /* increase roundness */
-  overflow: hidden; /* ensures rounded corners also clip inner content */
+  border-radius: 0.8rem !important; 
+  overflow: hidden; 
 }
 .custom-modal-spacing .modal-header {
   padding-bottom: 0.1rem !important;
@@ -265,12 +264,6 @@ hr.dashed {
     gap: 0.5rem;
   }
 
-  /* --- Text scaling --- */
-  // .text-bs-inter-medium-text-secondary-15s-19l,
-  // .text-bs-inter-r-grey-13s-16l {
-  //   font-size: 13px !important;
-  //   line-height: 18px !important;
-  // }
 }
 
 @media (min-width: 769px) {
@@ -278,6 +271,4 @@ hr.dashed {
     width: 95% !important;
     margin: 0 auto;
   }
-
-
 }
