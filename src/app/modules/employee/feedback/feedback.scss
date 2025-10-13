@@ -1,112 +1,5 @@
-
-:host {
-  --brand: #5b2ae3; 
-  --brand-100: #f3f1ff; 
-  --brand-200:#EFEAFE;
-  --success: #12b76a; 
-  --danger-100: #ffefef;
-
-  --input-text-clr: #1c1c1c;
-}
-
-
-
-.custom-input {
-  height: 40px;
-  padding: 21px;
-  font-size: 14px;
-  border: 1px solid #c0c0c1;
-  color: var(--input-text-clr);
-  box-shadow: none;
-  &:focus {
-    border-color: #004a8f;
-  }
-}
-
-/* Back button */
-.btn-back {
-  border-color: var(--brand);
-  color: var(--brand);
-}
-.btn-back:hover {
-  background: var(--brand);
-  color: #fff;
-}
-
-// custom submit button
-
-.custom-submit-btn {
-  background-color: #5b2ae3 !important;
-  border-color: #5b2ae3 !important;
-}
-
-.custom-submit-btn:hover {
-  background-color: #4a22c5 !important; /* slightly darker shade for hover */
-  border-color: #4a22c5 !important;
-}
-
-/* Card styling */
-.history-card {
-  border: 1.5px solid var(--brand-200);
-  box-shadow: none;
-}
-.avatar {
-  width: 48px;
-  height: 48px;
-}
-.bg-brand {
-  background-color: var(--brand) !important;
-}
-
-/* Divider */
-hr.dashed {
-  border-top: 1px dashed #d6d6d6;
-  opacity: 1;
-}
-
-/* Inputs */
-.input-pill {
-  padding: 0.75rem 1.313rem; /* 10px 16px */
-  border-radius: 9999px;
-}
-
-.action-buttons {
-  width: 80px; /* ensures consistent width whether 1 or 2 buttons are shown */
-}
-
-/* Action buttons (plus/minus) */
-.action-btn {
-  width: 30px;
-  height: 30px;
-  font-size: 25px;
-  border-radius: 50%;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  border: none;
-  line-height: 1;
-  font-weight: 600;
-}
-
-.action-btn.add {
-  background: var(--brand-100);
-  color: var(--brand);
-  filter: brightness(0.97);
-}
-.action-btn.remove {
-  background: var(--danger-100);
-  color: #f04438;
-}
-
-
-.blue-circle{
-  height: 20px;
-  width: 20px;
-}
-
-// for modal
-.modal {
-  transition: opacity 0.3s ease;
+.modal-lg {
+  --bs-modal-width: 800px;
 }
 
 .rating-star-icon {
@@ -130,12 +23,89 @@ hr.dashed {
   padding-top: 0.1rem !important;
 }
 
-.modal-lg {
-  --bs-modal-width: 800px;
+
+.history-card img.avatar {
+    width: 48px;
+    height: 48px;
 }
 
-// responsive design code
+.custom-submit-btn {
+  background-color: #5b2ae3 !important;
+  border-color: #5b2ae3 !important;
 
+  &:hover {
+    background-color: #4a22c5 !important;
+    border-color: #4a22c5 !important;
+  }
+}
+
+.bg-brand {
+  background-color: #5b2ae3 !important;
+}
+
+hr.dashed {
+  border-top: 1px dashed #d6d6d6;
+  opacity: 1;
+}
+
+.history-card {
+  border: 1.5px solid #EFEAFE;
+  box-shadow: none;
+}
+
+.blue-circle{
+  height: 20px;
+  width: 20px;
+}
+
+
+.custom-textarea:focus {
+  border-color: #004a8f !important;
+  box-shadow: none !important; /* remove Bootstrap blue shadow */
+  border: 1px solid #c0c0c1;
+  font-size: 14px;
+  color: #1c1c1c;
+}
+
+.follow-dropdown {
+  position: relative; // make container relative for absolute positioning
+  display: flex;
+  align-items: center;
+  gap: 35px; // gap between text and select+icon
+
+  select {
+    appearance: none; // remove default arrow
+    border: none;
+    background: transparent;
+    font-family: inherit;
+    font-size: 14px;
+    cursor: pointer;
+    padding-right: 24px; // space for icon
+    flex: 1;
+
+    &:focus {
+      outline: none;
+      box-shadow: none;
+    }
+  }
+
+  .dropdown-icon {
+    position: absolute; // position on top of select
+    right: 0;
+    width: 16px;
+    height: 16px;
+    pointer-events: none;
+
+    @media (max-width: 768px) {
+      width: 14px;
+      height: 14px;
+    }
+  }
+}
+
+
+
+// mediaqueries
 /* Base responsiveness only for screens < 992px */
 @media (max-width: 991.98px) {
   /* --- Modal adjustments --- */

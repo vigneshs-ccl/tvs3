@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component } from '@angular/core';
+import { Component, signal } from '@angular/core';
 import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ReactiveFormsModule, FormsModule } from '@angular/forms';
 import { SurveyService } from '@app/core/services/survey/survey.service';
@@ -14,7 +14,7 @@ import { SurveyData } from '@app/interface/surveyData';
 export class Survey {
   surveyForm!: FormGroup; // The main form
   isModalOpen = false;
-  submittedSurveys: SurveyData[] = [];
+  submittedSurveys = signal<SurveyData[]>([]);
 
   openModal() {
     this.isModalOpen = true;
@@ -29,18 +29,13 @@ export class Survey {
     private surveyService: SurveyService,
   ) {
     this.initForm();
+    this.loadPreviousSubmissions();
   }
 
-  //  Step 1: Initialize the form
+  // init form
   private initForm(): void {
-    const savedSurveys = this.surveyService.surveys(); // Get from service
-
     this.surveyForm = this.fb.group({
-      surveys: this.fb.array(
-        savedSurveys.length
-          ? savedSurveys.map((survey) => this.buildSurveyForm(survey))
-          : [this.buildSurveyForm()],
-      ),
+      surveys: this.fb.array([this.buildSurveyForm()]),
     });
   }
 
@@ -57,7 +52,7 @@ export class Survey {
       .toString()
       .padStart(2, '0')}-${today.getFullYear()}`;
     return this.fb.group({
-      surveyGiven: [data?.surveyGiven || '', Validators.required],
+      adviceGiven: [data?.adviceGiven || '', Validators.required],
       frequency: [data?.frequency || '', Validators.required],
       remarks: [data?.remarks || '', Validators.required],
       date: [data?.date || formattedDate],
@@ -72,7 +67,6 @@ export class Survey {
   //  Step 5: Remove a survey by index
   removeSurvey(index: number): void {
     this.surveysArray.removeAt(index);
-    this.saveToService();
   }
 
   //  Step 6: Clear all surveys
@@ -84,32 +78,44 @@ export class Survey {
     this.surveyForm.markAsPristine();
     this.surveyForm.markAsUntouched();
     this.surveyForm.updateValueAndValidity();
-
-    this.saveToService();
-    this.submittedSurveys = [];
+    this.clearAllData();
     this.closeModal();
   }
 
-  //  Step 7: Handle form submission
+  clearAllData(): void {
+    this.surveyService.clearAllSubmissions();
+    this.submittedSurveys.set([]); // reset UI
+    console.log('All survey data deleted');
+  }
+
+  private loadPreviousSubmissions(): void {
+    const allSubmissions = this.surveyService.submissions();
+    if (allSubmissions.length) {
+      const lastSubmission = allSubmissions[allSubmissions.length - 1];
+      this.submittedSurveys.set(lastSubmission.surveys.map((s, i) => ({ ...s, index: i })));
+    }
+  }
+
+  //  Step 8: Helper to save to service
+  private saveToService(): void {
+    const current = this.surveysArray.value;
+    this.surveyService.addSubmission(current);
+    this.submittedSurveys.set(current.map((s: SurveyData, i: number) => ({ ...s, index: i })));
+  }
+
+  //  submit
   onSubmit(): void {
     if (this.surveyForm.invalid) {
       this.surveyForm.markAllAsTouched();
       return;
     }
 
-    this.saveToService();
-    this.submittedSurveys = [...this.surveysArray.value];
-    console.log('Saved Surveys:', this.surveysArray.value);
-    console.log(' Submitted Surveys:', this.submittedSurveys);
-
-    // Optional: Reset the form to a fresh single row
+    this.saveToService(); // sync service + signal
+    console.log(this.submittedSurveys());
+    
+    // reset form
     this.surveyForm = this.fb.group({
       surveys: this.fb.array([this.buildSurveyForm()]),
     });
-  }
-
-  //  Step 8: Helper to save to service
-  private saveToService(): void {
-    this.surveyService.setSurveys(this.surveysArray.value);
   }
 }

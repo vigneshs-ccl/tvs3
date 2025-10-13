@@ -1,6 +1,7 @@
 import { Routes } from '@angular/router';
 import { AuthGuard } from '@app/core/guards/auth.guard';
 import { Survey } from '@app/modules/coach/survey/survey';
+import { Feedback } from './modules/employee/feedback/feedback';
 
 export const routes: Routes = [
   {
@@ -24,7 +25,7 @@ export const routes: Routes = [
   },
   {
     path: '',
-    redirectTo: '/survey',
+    redirectTo: '/feedback',
     pathMatch: 'full',
   },
   {
@@ -32,7 +33,11 @@ export const routes: Routes = [
     component: Survey,
   },
   {
+    path: 'feedback',
+    component: Feedback,
+  },
+  {
     path: '**',
-    redirectTo: '/survey',
+    redirectTo: '/feedback',
   },
 ];

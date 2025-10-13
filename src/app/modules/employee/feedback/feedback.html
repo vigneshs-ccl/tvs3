@@ -1,0 +1,184 @@
+<!-- Buttons for each submission -->
+<div *ngFor="let sub of submissions">
+  <button type="button" class="btn btn-primary" (click)="openModal(sub)">
+    Feedback - {{ sub.date }}
+  </button>
+</div>
+
+<!-- Modal -->
+<div
+  class="modal fade"
+  tabindex="-1"
+  [ngClass]="{ 'show d-block': isModalOpen }"
+  [style.background]="isModalOpen ? 'rgba(0,0,0,0.5)' : 'transparent'"
+>
+  <div
+    class="modal-dialog modal-dialog-centered w-100 w-md-90 mx-auto modal-lg modal-dialog-scrollable"
+  >
+    <div class="modal-content custom-modal-spacing">
+      <div
+        class="modal-header border-0 d-flex justify-content-center justify-content-md-between align-items-center"
+      >
+        <h6
+          class="mb-0 text-sm-bs-inter-sb-grey-dark-18s-21l text-bs-inter-sb-grey-dark-15s-19l me-2 px-3"
+        >
+          Physical wellbeing Coaching History
+        </h6>
+        <span class="text-bs-inter-medium-green-16s-20l">Compliance : 90%</span>
+        <button type="button" class="btn-close" (click)="closeModal()"></button>
+      </div>
+      <div class="modal-body">
+        <div class="card history-card rounded-4">
+          <div class="card-body px-cs-16 py-cs-16">
+            <!-- Coach + meta  -->
+            <div class="d-flex justify-content-between align-items-start gap-3">
+              <div class="d-flex align-items-center gap-3">
+                <img
+                  src="./assets/images/male.svg"
+                  alt="Coach avatar"
+                  class="rounded-circle object-fit-cover avatar"
+                />
+                <div class="d-flex">
+                  <div>
+                    <div class="d-flex align-items-center">
+                      <div class="text-bs-inter-medium-black-mid-16s-20l">Coach Name</div>
+                      <div class="small d-flex align-items-center mt-1">
+                        <span class="ms-2 fw-semibold text-warning">4</span>
+                        <img
+                          src="./assets/icons/rating-star.svg"
+                          alt="rating star"
+                          class="rating-star-icon"
+                        />
+                      </div>
+                    </div>
+                    <div class="text-bs-roboto-reg-grey-dark-13s-18l">Name&#64;tvsmotor.com</div>
+                    <div class="d-flex gap-1 align-items-center flex-row d-sm-none mt-2">
+                      <span class="badge rounded-pill bg-brand text-white px-3 py-2 fw-semibold"
+                        >2/2</span
+                      >
+                      <div
+                        class="text-bs-inter-medium-grey-mid-13s-18l text-lg-bs-inter-medium-grey-mid-15s-19l"
+                      >
+                        {{ selectedSubmission?.date }}
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="text-end d-none d-sm-block">
+                <span class="badge rounded-pill bg-brand text-white px-3 py-2 fw-semibold"
+                  >{{ selectedSubmissionIndex + 1 }}/{{ submissions.length }}</span
+                >
+                <div
+                  class="text-bs-inter-medium-grey-mid-13s-18l text-lg-bs-inter-medium-grey-mid-15s-19l mt-2"
+                >
+                  {{ selectedSubmission?.date }}
+                </div>
+              </div>
+            </div>
+
+            <hr class="my-3 dashed" />
+
+            <!-- Column headers -->
+            <div class="mb-2 d-flex flex-column flex-md-row justify-content-between pe-0 pe-md-5">
+              <div
+                class="d-none d-md-block text-bs-inter-medium-black-secondary-15s-19l mb-1 mb-md-0"
+              >
+                Advices : Advice Given - Frequency - Comments
+              </div>
+              <div class="d-none d-md-block text-bs-inter-medium-black-secondary-15s-19l">
+                Your Progress
+              </div>
+
+              <div
+                class="d-block d-md-none text-bs-inter-medium-black-secondary-15s-19l text-center"
+              >
+                Advices : Advice Given - Frequency - Comments - Your Progress
+              </div>
+            </div>
+
+            <!-- Survey list -->
+            <div *ngFor="let survey of selectedSubmission?.surveys">
+              <div
+                class="py-2 px-3 pe-md-5 d-flex flex-column flex-md-row justify-content-between align-items-start align-items-md-center w-100 border-bottom"
+              >
+                <!-- Left section -->
+                <div
+                  class="d-flex align-items-start justify-content-between flex-wrap flex-md-nowrap w-100 w-md-auto"
+                >
+                  <div class="d-flex align-items-center w-100">
+                    <div
+                      class="d-flex w-100 w-md-75 align-items-center align-items-md-start justify-content-start"
+                    >
+                      <div
+                        class="badge rounded-circle bg-primary d-inline-flex align-items-center justify-content-center flex-shrink-0 me-2 blue-circle"
+                      ></div>
+                      <div class="text-bs-inter-reg-grey-dark-mid-13s-18l">
+                        {{ survey.adviceGiven }} - {{ survey.frequency }} - {{ survey.remarks }}
+                        <br />
+                        <!-- Mobile version -->
+                        <span class="d-md-none text-bs-inter-reg-black-light-12s-15l">
+                          <div class="follow-dropdown">
+                            <!-- <span>I am Following</span> -->
+                            <select>
+                              <option value="following">I am Following</option>
+                              <option value="not-following">I am Not Following</option>
+                            </select>
+                            <img
+                              class="dropdown-icon"
+                              src="./assets/icons/dropdown.svg"
+                              alt="dropdown icon"
+                            />
+                          </div>
+                        </span>
+                      </div>
+                    </div>
+                    <div
+                      class="text-bs-inter-reg-black-light-13s-17l text-bs-inter-reg-black-light-14s-17l mt-2 mt-md-0 text-md-end w-25 w-md-auto d-none d-md-inline-block"
+                    >
+                      <div class="follow-dropdown">
+                        <!-- <span>I am Following</span> -->
+                        <select>
+                          <option value="following">I am Following</option>
+                          <option value="not-following">I am Not Following</option>
+                        </select>
+                        <img
+                          class="dropdown-icon"
+                          src="./assets/icons/dropdown.svg"
+                          alt="dropdown icon"
+                        />
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Footer section -->
+          </div>
+        </div>
+        <div class="d-flex align-items-center justify-content-center my-cs-25">
+          <app-star-rating
+            [(rating)]="submissionRating"
+            [max]="5"
+            [starSrc]="'./assets/icons/rating-star.svg'"
+            [starSize]="'38px'"
+            (ratingChange)="onRatingChange($event)"
+          ></app-star-rating>
+        </div>
+
+        <div class="px-cs-10">
+          <div class="text-bs-inter-medium-black-secondary-15s-19l">Feedback</div>
+          <div class="mb-3">
+            <textarea class="form-control custom-textarea" rows="4"></textarea>
+          </div>
+        </div>
+
+        <div class="modal-footer justify-content-lg-end justify-content-center">
+          <button type="button" class="btn btn-secondary" (click)="closeModal()">Close</button>
+          <button type="button" class="btn btn-primary custom-submit-btn">Submit</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

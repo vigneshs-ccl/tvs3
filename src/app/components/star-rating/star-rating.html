@@ -1,0 +1,14 @@
+<div class="star-rating d-flex gap-3">
+  <img
+    *ngFor="let star of [].constructor(max); let i = index"
+    [src]="starSrc"
+    [style.width]="starSize"
+    [style.height]="starSize"
+    [style.filter]="(hoverIndex ? i < hoverIndex : i < rating) ? 'none' : 'grayscale(100%) brightness(150%) drop-shadow(0 0 0 black)'"
+    (click)="setRating(i + 1)"
+    (mouseenter)="setHover(i + 1)"
+    (mouseleave)="clearHover()"
+    class="star"
+    alt="star"
+  />
+</div>
