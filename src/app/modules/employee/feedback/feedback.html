@@ -1,5 +1,5 @@
 <!-- Buttons for each submission -->
-<div *ngFor="let sub of submissions">
+<div *ngFor="let sub of submissions(); trackBy: trackBySubmission">
   <button type="button" class="btn btn-primary" (click)="openModal(sub)">
     Feedback - {{ sub.date }}
   </button>
@@ -67,7 +67,7 @@
               </div>
               <div class="text-end d-none d-sm-block">
                 <span class="badge rounded-pill bg-brand text-white px-3 py-2 fw-semibold"
-                  >{{ selectedSubmissionIndex + 1 }}/{{ submissions.length }}</span
+                  >{{ selectedSubmissionIndex + 1 }}/{{ submissions().length }}</span
                 >
                 <div
                   class="text-bs-inter-medium-grey-mid-13s-18l text-lg-bs-inter-medium-grey-mid-15s-19l mt-2"
@@ -98,7 +98,7 @@
             </div>
 
             <!-- Survey list -->
-            <div *ngFor="let survey of selectedSubmission?.surveys">
+            <div *ngFor="let survey of selectedSubmission?.surveys; trackBy: trackBySurvey">
               <div
                 class="py-2 px-3 pe-md-5 d-flex flex-column flex-md-row justify-content-between align-items-start align-items-md-center w-100 border-bottom"
               >
@@ -116,13 +116,13 @@
                       <div class="text-bs-inter-reg-grey-dark-mid-13s-18l">
                         {{ survey.adviceGiven }} - {{ survey.frequency }} - {{ survey.remarks }}
                         <br />
-                        <!-- Mobile version -->
+                        <!-- Mobile version dropdown-->
                         <span class="d-md-none text-bs-inter-reg-black-light-12s-15l">
                           <div class="follow-dropdown">
                             <!-- <span>I am Following</span> -->
-                            <select>
+                            <select [(ngModel)]="survey.followStatus">
                               <option value="following">I am Following</option>
-                              <option value="not-following">I am Not Following</option>
+                              <option value="not-following">I am not Following</option>
                             </select>
                             <img
                               class="dropdown-icon"
@@ -133,14 +133,15 @@
                         </span>
                       </div>
                     </div>
+                    <!-- destop version dropdown -->
                     <div
                       class="text-bs-inter-reg-black-light-13s-17l text-bs-inter-reg-black-light-14s-17l mt-2 mt-md-0 text-md-end w-25 w-md-auto d-none d-md-inline-block"
                     >
                       <div class="follow-dropdown">
                         <!-- <span>I am Following</span> -->
-                        <select>
+                        <select [(ngModel)]="survey.followStatus">
                           <option value="following">I am Following</option>
-                          <option value="not-following">I am Not Following</option>
+                          <option value="not-following">I am not Following</option>
                         </select>
                         <img
                           class="dropdown-icon"
@@ -157,9 +158,12 @@
             <!-- Footer section -->
           </div>
         </div>
-        <div class="d-flex align-items-center justify-content-center my-cs-25">
+        <div
+          *ngIf="selectedSubmission"
+          class="d-flex align-items-center justify-content-center my-cs-25"
+        >
           <app-star-rating
-            [(rating)]="submissionRating"
+            [(rating)]="selectedSubmission.rating"
             [max]="5"
             [starSrc]="'./assets/icons/rating-star.svg'"
             [starSize]="'38px'"
@@ -169,14 +173,20 @@
 
         <div class="px-cs-10">
           <div class="text-bs-inter-medium-black-secondary-15s-19l">Feedback</div>
-          <div class="mb-3">
-            <textarea class="form-control custom-textarea" rows="4"></textarea>
+          <div class="mb-3" *ngIf="selectedSubmission">
+            <textarea
+              class="form-control custom-textarea"
+              rows="4"
+              [(ngModel)]="selectedSubmission.feedback"
+            ></textarea>
           </div>
         </div>
 
         <div class="modal-footer justify-content-lg-end justify-content-center">
           <button type="button" class="btn btn-secondary" (click)="closeModal()">Close</button>
-          <button type="button" class="btn btn-primary custom-submit-btn">Submit</button>
+          <button type="button" class="btn btn-primary custom-submit-btn" (click)="onSubmit()">
+            Submit
+          </button>
         </div>
       </div>
     </div>

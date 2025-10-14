@@ -1,9 +1,10 @@
 import { CommonModule } from '@angular/common';
-import { Component, signal } from '@angular/core';
+import { Component, computed } from '@angular/core';
 import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ReactiveFormsModule, FormsModule } from '@angular/forms';
 import { SurveyService } from '@app/core/services/survey/survey.service';
 import { SurveyData } from '@app/interface/surveyData';
+// import { SurveySubmission } from '@app/interface/surveySubmission';
 
 @Component({
   selector: 'app-survey',
@@ -14,10 +15,24 @@ import { SurveyData } from '@app/interface/surveyData';
 export class Survey {
   surveyForm!: FormGroup; // The main form
   isModalOpen = false;
-  submittedSurveys = signal<SurveyData[]>([]);
+  submittedSurveys = computed(() => this.surveyService.submissions());
 
   openModal() {
+    const submissions = this.surveyService.submissions();
     this.isModalOpen = true;
+
+    //  If previous submissions exist, load the *latest* one
+    if (submissions.length > 0) {
+      const lastSubmission = submissions[submissions.length - 1];
+
+      // Clear current form array
+      this.surveysArray.clear();
+
+      // Recreate form rows for each survey in the last submission
+      lastSubmission.surveys.forEach((survey) => {
+        this.surveysArray.push(this.buildSurveyForm(survey));
+      });
+    }
   }
 
   closeModal() {
@@ -29,7 +44,7 @@ export class Survey {
     private surveyService: SurveyService,
   ) {
     this.initForm();
-    this.loadPreviousSubmissions();
+    // this.loadPreviousSubmissions();
   }
 
   // init form
@@ -40,8 +55,9 @@ export class Survey {
   }
 
   //  Step 2: Shortcut to access 'surveys' array
+  /** Shortcut for accessing surveys array */
   get surveysArray(): FormArray {
-    return this.surveyForm.get('surveys')! as FormArray;
+    return this.surveyForm.get('surveys') as FormArray;
   }
 
   //  Step 3: Create one survey group
@@ -74,33 +90,14 @@ export class Survey {
     this.surveyForm = this.fb.group({
       surveys: this.fb.array([this.buildSurveyForm()]),
     });
-
-    this.surveyForm.markAsPristine();
-    this.surveyForm.markAsUntouched();
-    this.surveyForm.updateValueAndValidity();
-    this.clearAllData();
+    this.surveyService.clearAllSubmissions();
     this.closeModal();
   }
 
   clearAllData(): void {
     this.surveyService.clearAllSubmissions();
-    this.submittedSurveys.set([]); // reset UI
-    console.log('All survey data deleted');
-  }
-
-  private loadPreviousSubmissions(): void {
-    const allSubmissions = this.surveyService.submissions();
-    if (allSubmissions.length) {
-      const lastSubmission = allSubmissions[allSubmissions.length - 1];
-      this.submittedSurveys.set(lastSubmission.surveys.map((s, i) => ({ ...s, index: i })));
-    }
-  }
-
-  //  Step 8: Helper to save to service
-  private saveToService(): void {
-    const current = this.surveysArray.value;
-    this.surveyService.addSubmission(current);
-    this.submittedSurveys.set(current.map((s: SurveyData, i: number) => ({ ...s, index: i })));
+    this.initForm();
+    this.closeModal();
   }
 
   //  submit
@@ -110,10 +107,10 @@ export class Survey {
       return;
     }
 
-    this.saveToService(); // sync service + signal
-    console.log(this.submittedSurveys());
-    
-    // reset form
+    const surveys = this.surveysArray.value as SurveyData[];
+    this.surveyService.addSubmission(surveys); // ✅ save directly to shared signal
+
+    // Reset form
     this.surveyForm = this.fb.group({
       surveys: this.fb.array([this.buildSurveyForm()]),
     });

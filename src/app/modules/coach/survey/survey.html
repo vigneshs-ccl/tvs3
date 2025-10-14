@@ -8,9 +8,7 @@
   [ngClass]="{ 'show d-block': isModalOpen }"
   [style.background]="isModalOpen ? 'rgba(0,0,0,0.5)' : 'transparent'"
 >
-  <div
-    class="modal-dialog modal-dialog-centered w-90 mx-auto modal-lg modal-dialog-scrollable"
-  >
+  <div class="modal-dialog modal-dialog-centered w-90 mx-auto modal-lg modal-dialog-scrollable">
     <div class="modal-content custom-modal-spacing">
       <div
         class="modal-header border-0 d-flex justify-content-center justify-content-md-between align-items-center"
@@ -57,21 +55,21 @@
                         >Advices : Advice Given - Frequency - Comments</span
                       >
                     </div>
-                    <div class="d-flex gap-1 align-items-center flex-row d-sm-none mt-2">
+                    <!-- <div class="d-flex gap-1 align-items-center flex-row d-sm-none mt-2">
                       <span class="badge rounded-pill bg-brand text-white px-3 py-2 fw-semibold"
-                        >2/2</span
+                        >{{ surveysArray.length }}/{{ surveysArray.length }}</span
                       >
                       <div
                         class="text-bs-inter-medium-grey-mid-13s-18l text-lg-bs-inter-medium-grey-mid-15s-19l"
                       >
                         {{ surveysArray.at(0).get('date')?.value }}
                       </div>
-                    </div>
+                    </div> -->
                   </div>
                 </div>
-                <div class="text-end d-none d-sm-block">
+                <div class="d-flex flex-column align-items-end">
                   <span class="badge rounded-pill bg-brand text-white px-3 py-2 fw-semibold"
-                    >2/2</span
+                    >{{ surveysArray.length }}/{{ surveysArray.length }}</span
                   >
                   <div
                     class="text-bs-inter-medium-grey-mid-13s-18l text-lg-bs-inter-medium-grey-mid-15s-19l mt-2"
@@ -141,7 +139,7 @@
                       </div>
                       <!--  Button column -->
                       <div
-                        class="col-auto action-buttons d-flex justify-content-end justify-content-lg-end gap-1 mt-sm-3"
+                        class="col-auto action-buttons d-flex justify-content-end justify-content-lg-end gap-1 mt-sm-3 pt-2 pr-5 pt-lg-0 pr-lg-0"
                       >
                         @if (surveysArray.length > 1) {
                           <button
@@ -150,7 +148,7 @@
                             (click)="removeSurvey(i)"
                             aria-label="Remove row"
                           >
-                            <span class="minus">−</span>
+                            <img src="./assets/icons/remove.svg" alt="Remove" />
                           </button>
                         }
 
@@ -161,7 +159,7 @@
                             (click)="addSurvey()"
                             aria-label="Add row"
                           >
-                            <span class="plus">+</span>
+                            <img src="./assets/icons/add.svg" alt="Remove" />
                           </button>
                         }
                       </div>
@@ -171,136 +169,156 @@
               </form>
             </div>
           </div>
+          <!-- Check if there are submissions -->
           @if (submittedSurveys().length > 0) {
-            <div class="text-bs-inter-reg-grey-medium-light-13s-18l px-2 py-2 mt-3">
-              Advice Given
-            </div>
-            <div class="card history-card rounded-4">
-              <div class="card-body px-cs-16 py-cs-16">
-                <!-- Coach + meta  -->
-                <div class="d-flex justify-content-between align-items-start gap-3">
-                  <div class="d-flex align-items-center gap-3">
-                    <img
-                      src="./assets/images/male.svg"
-                      alt="Coach avatar"
-                      class="rounded-circle object-fit-cover avatar"
-                    />
-                    <div class="d-flex">
-                      <div>
-                        <div class="d-flex align-items-center">
-                          <div class="text-bs-inter-medium-black-mid-16s-20l">Coach Name</div>
-                          <div class="small d-flex align-items-center mt-1">
-                            <span class="ms-2 fw-semibold text-warning">4</span>
-                            <img
-                              src="./assets/icons/rating-star.svg"
-                              alt="rating star"
-                              class="rating-star-icon"
-                            />
+            <!-- Loop over each submission -->
+            @for (submission of submittedSurveys().slice().reverse(); track submission.id) {
+              <div class="text-bs-inter-reg-grey-medium-light-13s-18l px-2 py-2 mt-3">
+                Advice Given
+              </div>
+              <div class="card history-card rounded-4 mb-3">
+                <div class="card-body px-cs-16 py-cs-16">
+                  <!-- Coach + meta -->
+                  <div class="d-flex justify-content-between align-items-start gap-3">
+                    <div class="d-flex align-items-center gap-3">
+                      <img
+                        src="./assets/images/male.svg"
+                        alt="Coach avatar"
+                        class="rounded-circle object-fit-cover avatar"
+                      />
+                      <div class="d-flex">
+                        <div>
+                          <div class="d-flex align-items-center">
+                            <div class="text-bs-inter-medium-black-mid-16s-20l">Coach Name</div>
+                            <div class="small d-flex align-items-center mt-1">
+                              <span class="ms-2 fw-semibold text-warning">{{
+                                submission.rating || 0
+                              }}</span>
+                              <img
+                                src="./assets/icons/rating-star.svg"
+                                alt="rating star"
+                                class="rating-star-icon"
+                              />
+                            </div>
                           </div>
-                        </div>
-                        <div class="text-bs-roboto-reg-grey-dark-13s-18l">
-                          Name&#64;tvsmotor.com
-                        </div>
-                        <div class="d-flex gap-1 align-items-center flex-row d-sm-none mt-2">
-                          <span class="badge rounded-pill bg-brand text-white px-3 py-2 fw-semibold"
-                            >2/2</span
-                          >
-                          <div
-                            class="text-bs-inter-medium-grey-mid-13s-18l text-lg-bs-inter-medium-grey-mid-15s-19l"
-                          >
-                            {{ surveysArray.at(0).get('date')?.value }}
+                          <div class="text-bs-roboto-reg-grey-dark-13s-18l">
+                            Name&#64;tvsmotor.com
                           </div>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                  <div class="text-end d-none d-sm-block">
-                    <span class="badge rounded-pill bg-brand text-white px-3 py-2 fw-semibold"
-                      >1/2</span
-                    >
-                    <div
-                      class="text-bs-inter-medium-grey-mid-13s-18l text-lg-bs-inter-medium-grey-mid-15s-19l mt-2"
-                    >
-                      {{ surveysArray.at(0).get('date')?.value }}
-                    </div>
-                  </div>
-                </div>
-
-                <hr class="my-3 dashed" />
-
-                <!-- Column headers  -->
-                <div
-                  class="mb-2 d-flex flex-column flex-md-row justify-content-between pe-0 pe-md-5"
-                >
-                  <!-- Desktop version (≥768px) -->
-                  <div
-                    class="d-none d-md-block text-bs-inter-medium-black-secondary-15s-19l mb-1 mb-md-0"
-                  >
-                    Advices : Advice Given - Frequency - Comments
-                  </div>
-                  <div class="d-none d-md-block text-bs-inter-medium-black-secondary-15s-19l">
-                    Your Progress
-                  </div>
-
-                  <!-- Mobile version (<768px) -->
-                  <div
-                    class="d-block d-md-none text-bs-inter-medium-black-secondary-15s-19l text-center"
-                  >
-                    Advices : Advice Given - Frequency - Comments - Your Progress
-                  </div>
-                </div>
-
-                <!-- Survey list after submission -->
-                @for (survey of submittedSurveys(); track survey) {
-                  <div
-                    class="py-2 px-3 pe-md-5 d-flex flex-column flex-md-row justify-content-between align-items-start align-items-md-center w-100 border-bottom"
-                  >
-                    <!-- Left section -->
-                    <div
-                      class="d-flex align-items-start justify-content-between flex-wrap flex-md-nowrap w-100 w-md-auto"
-                    >
-                      <!-- Badge circle -->
-                      <div class="d-flex align-items-center w-100">
-                        <div
-                          class="d-flex w-100 w-md-75 align-items-center align-items-md-start justify-content-start"
-                        >
-                          <div
-                            class="badge rounded-circle bg-primary d-inline-flex align-items-center justify-content-center flex-shrink-0 me-2 blue-circle"
-                          ></div>
-                          <div class="text-bs-inter-reg-grey-dark-mid-13s-18l">
-                            {{ survey.adviceGiven }} - {{ survey.frequency }} - {{ survey.remarks }}
-                            <br />
-                            <span class="d-md-none text-bs-inter-reg-black-light-12s-15l"
-                              >I am Following</span
+                          <!-- add here -->
+                          <div class="d-flex gap-1 align-items-center flex-row d-sm-none mt-2">
+                            <span
+                              class="badge rounded-pill bg-brand text-white px-3 py-2 fw-semibold"
+                              >{{ submission.surveys.length }}/{{ submission.surveys.length }}</span
                             >
+                            <div
+                              class="text-bs-inter-medium-grey-mid-13s-18l text-lg-bs-inter-medium-grey-mid-15s-19l"
+                            >
+                              {{ submission.date }}
+                            </div>
                           </div>
                         </div>
-                        <div
-                          class="text-bs-inter-reg-black-light-13s-17l text-bs-inter-reg-black-light-14s-17l mt-2 mt-md-0 text-md-end w-25 w-md-auto d-none d-md-inline-block"
-                        >
-                          I am Following
-                        </div>
                       </div>
-
-                      <!-- Right section -->
+                    </div>
+                    <div class="text-end d-none d-sm-block">
+                      <span class="badge rounded-pill bg-brand text-white px-3 py-2 fw-semibold"
+                        >{{ submission.surveys.length }}/{{ submission.surveys.length }}</span
+                      >
+                      <div
+                        class="text-bs-inter-medium-grey-mid-13s-18l text-lg-bs-inter-medium-grey-mid-15s-19l mt-2"
+                      >
+                        {{ submission.date }}
+                      </div>
                     </div>
                   </div>
-                }
 
-                <div
-                  class="d-flex align-items-center justify-content-md-start justify-content-center mt-2 gap-5"
-                >
-                  <div class="d-flex ms-md-5 gap-1">
-                    <img src="./assets/icons/feedback.svg" alt="feedback" />
-                    <span class="text-bs-inter-medium-purple-12s-15l mb-1">Feedback</span>
+                  <hr class="my-3 dashed" />
+
+                  <!-- Column headers -->
+                  <div
+                    class="mb-2 d-flex flex-column flex-md-row justify-content-between pe-0 pe-md-5"
+                  >
+                    <div
+                      class="d-none d-md-block text-bs-inter-medium-black-secondary-15s-19l mb-1 mb-md-0"
+                    >
+                      Advices : Advice Given - Frequency - Comments
+                    </div>
+                    <div class="d-none d-md-block text-bs-inter-medium-black-secondary-15s-19l">
+                      Your Progress
+                    </div>
+                    <div
+                      class="d-block d-md-none text-bs-inter-medium-black-secondary-15s-19l text-center"
+                    >
+                      Advices : Advice Given - Frequency - Comments - Your Progress
+                    </div>
                   </div>
 
-                  <div class="text-bs-inter-reg-grey-dark-mid-13s-18l">
-                    This Session was Very Good
-                  </div>
+                  <!-- Survey list for this submission -->
+                  @for (survey of submission.surveys; track survey) {
+                    <div
+                      class="py-2 px-3 pe-md-5 d-flex flex-column flex-md-row justify-content-between align-items-start align-items-md-center w-100 border-bottom"
+                    >
+                      <div
+                        class="d-flex align-items-start justify-content-between flex-wrap flex-md-nowrap w-100 w-md-auto"
+                      >
+                        <div class="d-flex align-items-center w-100">
+                          <div
+                            class="d-flex w-100 w-md-75 align-items-center align-items-md-start justify-content-start"
+                          >
+                            <div
+                              class="badge rounded-circle bg-primary d-inline-flex align-items-center justify-content-center flex-shrink-0 me-2 blue-circle"
+                            ></div>
+                            <div class="text-bs-inter-reg-grey-dark-mid-13s-18l">
+                              {{ survey.adviceGiven }} - {{ survey.frequency }} -
+                              {{ survey.remarks }}
+                              <br />
+                              <!-- Mobile version -->
+                              <span class="d-md-none text-bs-inter-reg-black-light-12s-15l">
+                                {{
+                                  survey.followStatus === 'following'
+                                    ? 'I am Following'
+                                    : survey.followStatus === 'not-following'
+                                      ? 'I am not Following'
+                                      : ''
+                                }}
+                              </span>
+                            </div>
+                          </div>
+                          <div
+                            class="text-bs-inter-reg-black-light-13s-17l text-bs-inter-reg-black-light-14s-17l mt-2 mt-md-0 text-md-end w-25 w-md-auto d-none d-md-inline-block"
+                          >
+                            {{
+                              survey.followStatus === 'following'
+                                ? 'I am Following'
+                                : survey.followStatus === 'not-following'
+                                  ? 'I am not Following'
+                                  : ''
+                            }}
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  }
+
+                  <!-- Feedback section -->
+                  @if (submission.feedback && submission.feedback.trim() !== '') {
+                    <div
+                      class="d-flex align-items-center justify-content-md-start justify-content-center mt-2 gap-5"
+                    >
+                      <div class="d-flex ms-md-3 gap-1">
+                        <img src="./assets/icons/feedback.svg" alt="feedback" />
+                        <span class="text-bs-inter-medium-purple-12s-15l mb-1 ps-cs-6"
+                          >Feedback</span
+                        >
+                      </div>
+
+                      <div class="text-bs-inter-reg-grey-medium-light-13s-18l ps-cs-28">
+                        {{ submission.feedback }}
+                      </div>
+                    </div>
+                  }
                 </div>
               </div>
-            </div>
+            }
           }
         </div>
       </div>

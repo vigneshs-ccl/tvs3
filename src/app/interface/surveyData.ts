@@ -4,4 +4,5 @@ export interface SurveyData {
   frequency: string;
   remarks: string;
   date: string;
+  followStatus?: 'following' | 'not-following' | 'pending';
 }

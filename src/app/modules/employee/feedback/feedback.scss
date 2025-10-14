@@ -54,8 +54,8 @@ hr.dashed {
 }
 
 .blue-circle{
-  height: 20px;
-  width: 20px;
+  height: 18px;
+  width: 18px;
 }
 
 
@@ -68,32 +68,31 @@ hr.dashed {
 }
 
 .follow-dropdown {
-  position: relative; // make container relative for absolute positioning
-  display: flex;
+  position: relative;
+  display: inline-flex;
   align-items: center;
-  gap: 35px; // gap between text and select+icon
 
   select {
-    appearance: none; // remove default arrow
+    appearance: none;
     border: none;
-    background: transparent;
-    font-family: inherit;
-    font-size: 14px;
+    border-radius: 6px;
+    padding: 6px 28px 6px 10px;
+    font-size: 13px;
+    color: #333;
+    background-color: #fff;
     cursor: pointer;
-    padding-right: 24px; // space for icon
-    flex: 1;
+    outline: none;
 
-    &:focus {
-      outline: none;
-      box-shadow: none;
+    /* Background highlight when hovering over the dropdown */
+    &:hover {
+      background-color: #f6f4ff;
     }
   }
 
   .dropdown-icon {
-    position: absolute; // position on top of select
-    right: 0;
-    width: 16px;
-    height: 16px;
+    position: absolute;
+    right: 10px;
+    width: 10px;
     pointer-events: none;
 
     @media (max-width: 768px) {

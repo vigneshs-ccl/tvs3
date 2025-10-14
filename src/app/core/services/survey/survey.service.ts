@@ -22,11 +22,19 @@ export class SurveyService {
       id: uuidv4(),
       date: formattedDate,
       surveys,
+      rating: 0,
+      feedback: '',
     };
 
     const updated = [...this._submissions(), newSubmission];
     this._submissions.set(updated);
     this.saveSubmissionsToLocalStorage(updated);
+  }
+
+  updateSubmission(updated: SurveySubmission): void {
+    const updatedList = this._submissions().map((sub) => (sub.id === updated.id ? updated : sub));
+    this._submissions.set(updatedList);
+    this.saveSubmissionsToLocalStorage(updatedList);
   }
 
   private saveSubmissionsToLocalStorage(submissions: SurveySubmission[]): void {
