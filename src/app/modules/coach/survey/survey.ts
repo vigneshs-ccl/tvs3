@@ -4,7 +4,6 @@ import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ReactiveFormsModule, FormsModule } from '@angular/forms';
 import { SurveyService } from '@app/core/services/survey/survey.service';
 import { SurveyData } from '@app/interface/surveyData';
-// import { SurveySubmission } from '@app/interface/surveySubmission';
 
 @Component({
   selector: 'app-survey',
@@ -100,6 +99,10 @@ export class Survey {
     this.closeModal();
   }
 
+  getOverallCompliance(): number {
+    return this.surveyService.getOverallCompliance();
+  }
+
   //  submit
   onSubmit(): void {
     if (this.surveyForm.invalid) {
@@ -108,7 +111,7 @@ export class Survey {
     }
 
     const surveys = this.surveysArray.value as SurveyData[];
-    this.surveyService.addSubmission(surveys); // ✅ save directly to shared signal
+    this.surveyService.addSubmission(surveys); // save directly to shared signal
 
     // Reset form
     this.surveyForm = this.fb.group({

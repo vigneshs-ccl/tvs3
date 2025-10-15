@@ -19,7 +19,6 @@ export class Feedback {
   selectedSubmissionIndex: number = 0;
   submissionRating: number = 0;
 
-
   openModal(submission: SurveySubmission) {
     // Track the index
     const allSubmissions = this.submissions();
@@ -27,6 +26,13 @@ export class Feedback {
 
     // Deep copy to avoid changing original before save
     this.selectedSubmission = JSON.parse(JSON.stringify(submission));
+
+    if (this.selectedSubmission?.surveys?.length) {
+      this.selectedSubmission.surveys = this.selectedSubmission.surveys.map((s: SurveyData) => ({
+        ...s,
+        followStatus: s.followStatus ?? '', // use '' if undefined or null
+      }));
+    }
     this.isModalOpen = true;
   }
 
@@ -60,12 +66,19 @@ export class Feedback {
     }
   }
 
+  // compliance calculation
+  getCompliance(): number {
+    if (!this.selectedSubmission) return 0;
+    return this.surveyService.getCompliance(this.selectedSubmission);
+  }
+
   onSubmit() {
     if (!this.selectedSubmission) return;
 
     this.selectedSubmission.surveys = this.selectedSubmission.surveys.map((s) => ({
       ...s,
-      followStatus: s.followStatus || 'following',
+      followStatus: s.followStatus || '',
+      compliance: s.followStatus === 'following' ? 100 : 0,
     }));
 
     console.log('Submitted Data:', this.selectedSubmission);

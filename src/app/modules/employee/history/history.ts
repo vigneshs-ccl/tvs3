@@ -7,9 +7,9 @@ import { SurveySubmission } from '@app/interface/surveySubmission';
 
 @Component({
   selector: 'app-history',
-  imports:[NgClass,CommonModule,FormsModule],
+  imports: [NgClass, CommonModule, FormsModule],
   templateUrl: './history.html',
-  styleUrls: ['./history.scss']
+  styleUrls: ['./history.scss'],
 })
 export class History {
   surveyService = inject(SurveyService);
@@ -19,6 +19,18 @@ export class History {
 
   // Readonly submissions signal
   submissions = computed(() => this.surveyService.submissions());
+
+  ngOnInit() {
+    // Ensure all followStatus fields are initialized
+    const allSubmissions = this.submissions();
+    allSubmissions.forEach((submission) => {
+      submission.surveys.forEach((survey) => {
+        if (survey.followStatus === undefined || survey.followStatus === null) {
+          survey.followStatus = ''; // ensures placeholder shows
+        }
+      });
+    });
+  }
 
   // Open modal
   openModal() {
@@ -40,6 +52,12 @@ export class History {
     return item.adviceGiven + index;
   }
 
+
+  // overall compliance calculation
+  getOverallCompliance(): number {
+    return this.surveyService.getOverallCompliance();
+  }
+
   // Save the latest submission (only editable surveys)
   saveLatestSubmission() {
     const submissionsList = this.submissions();
@@ -52,5 +70,10 @@ export class History {
     this.surveyService.updateSubmission(latestSubmission);
     this.closeModal();
     // alert('Latest submission updated successfully!');
+  }
+
+  onFollowStatusChange(submission: SurveySubmission) {
+    // Update immediately in SurveyService
+    this.surveyService.updateSubmission(submission);
   }
 }

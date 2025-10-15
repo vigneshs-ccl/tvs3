@@ -11,16 +11,25 @@
   <div class="modal-dialog modal-dialog-centered w-90 mx-auto modal-lg modal-dialog-scrollable">
     <div class="modal-content custom-modal-spacing">
       <div
-        class="modal-header border-0 d-flex justify-content-center justify-content-md-between align-items-center"
+        class="modal-header border-0 position-relative d-flex flex-column flex-md-row justify-content-md-between align-items-md-center custom-modal-header text-center text-md-start"
         *ngIf="submissions().length > 0"
       >
-        <h6
-          class="mb-0 text-sm-bs-inter-sb-grey-dark-18s-21l text-bs-inter-sb-grey-dark-15s-19l me-2 px-3"
+        <div
+          class="d-flex flex-column flex-md-row align-items-center align-items-md-center gap-1 gap-md-2 w-100 ps-cs-6"
         >
-          Physical wellbeing Coaching History
-        </h6>
-        <span class="text-bs-inter-medium-green-16s-20l">Compliance : 90%</span>
-        <button type="button" class="btn-close" (click)="closeModal()"></button>
+          <h6 class="mb-0 text-sm-bs-inter-sb-grey-dark-18s-21l text-bs-inter-sb-grey-dark-15s-19l">
+            Physical wellbeing Coaching History
+          </h6>
+          <span class="text-bs-inter-medium-green-16s-20l mt-1 mt-md-0 ms-md-3">
+            Compliance: {{ getOverallCompliance() }}%
+          </span>
+        </div>
+
+        <button
+          type="button"
+          class="btn-close position-absolute top-0 end-0 mt-2 me-2"
+          (click)="closeModal()"
+        ></button>
       </div>
 
       <div class="modal-body">
@@ -31,6 +40,7 @@
               *ngFor="
                 let submission of submissions().slice().reverse();
                 let first = first;
+                let i = index;
                 trackBy: trackBySubmission
               "
               class="card history-card rounded-4 mb-3"
@@ -42,45 +52,35 @@
                     <img
                       src="./assets/images/male.svg"
                       alt="Coach avatar"
-                      class="rounded-circle object-fit-cover avatar"
+                      class="rounded-circle avatar"
                     />
                     <div class="d-flex">
                       <div>
                         <div class="d-flex align-items-center">
                           <div class="text-bs-inter-medium-black-mid-16s-20l">Coach Name</div>
-                          <div class="small d-flex align-items-center mt-1">
-                            <span class="ms-2 fw-semibold text-warning">{{
-                              submission.rating || 0
-                            }}</span>
-                            <img
-                              src="./assets/icons/rating-star.svg"
-                              alt="rating star"
-                              class="rating-star-icon"
-                            />
-                          </div>
+                          @if (submission.rating && submission.rating > 0) {
+                            <div class="small d-flex align-items-center mt-1">
+                              <span class="ms-2 fw-semibold text-warning">{{
+                                submission.rating
+                              }}</span>
+                              <img
+                                src="./assets/icons/rating-star.svg"
+                                alt="rating star"
+                                class="rating-star-icon"
+                              />
+                            </div>
+                          }
                         </div>
                         <div class="text-bs-roboto-reg-grey-dark-13s-18l">
                           Name&#64;tvsmotor.com
                         </div>
-                        <div class="d-flex gap-1 align-items-center flex-row d-sm-none mt-2">
-                          <span
-                            class="badge rounded-pill bg-brand text-white px-3 py-2 fw-semibold"
-                          >
-                            {{ submission.surveys.length }}/{{ submission.surveys.length }}
-                          </span>
-                          <div
-                            class="text-bs-inter-medium-grey-mid-13s-18l text-lg-bs-inter-medium-grey-mid-15s-19l"
-                          >
-                            {{ submission.date }}
-                          </div>
-                        </div>
                       </div>
                     </div>
                   </div>
-                  <div class="text-end d-none d-sm-block">
-                    <span class="badge rounded-pill bg-brand text-white px-3 py-2 fw-semibold">
-                      {{ submission.surveys.length }}/{{ submission.surveys.length }}
-                    </span>
+                  <div class="d-flex flex-column align-items-end no-shrink">
+                    <span class="badge rounded-pill bg-brand text-white px-3 py-2 fw-semibold"
+                      >{{ submissions().length - i }}/{{ submissions().length }}</span
+                    >
                     <div
                       class="text-bs-inter-medium-grey-mid-13s-18l text-lg-bs-inter-medium-grey-mid-15s-19l mt-2"
                     >
@@ -136,7 +136,11 @@
                               class="d-md-none text-bs-inter-reg-black-light-12s-15l"
                             >
                               <div class="follow-dropdown">
-                                <select [(ngModel)]="survey.followStatus">
+                                <select
+                                  [(ngModel)]="survey.followStatus"
+                                  (ngModelChange)="onFollowStatusChange(submission)"
+                                >
+                                  <option value="" disabled>Select</option>
                                   <option value="following">I am Following</option>
                                   <option value="not-following">I am not Following</option>
                                 </select>
@@ -151,7 +155,7 @@
                             <!-- Mobile readonly for previous submissions -->
                             <span
                               *ngIf="!first"
-                              class="d-md-none text-bs-inter-reg-black-light-12s-15l"
+                              class="d-md-none"
                             >
                               {{
                                 survey.followStatus === 'following'
@@ -169,7 +173,11 @@
                           class="text-bs-inter-reg-black-light-13s-17l text-bs-inter-reg-black-light-14s-17l mt-2 mt-md-0 text-md-end w-25 w-md-auto d-none d-md-inline-block"
                         >
                           <div *ngIf="first" class="follow-dropdown">
-                            <select [(ngModel)]="survey.followStatus">
+                            <select
+                              [(ngModel)]="survey.followStatus"
+                              (ngModelChange)="onFollowStatusChange(submission)"
+                            >
+                              <option value="" disabled>Select</option>
                               <option value="following" selected>I am Following</option>
                               <option value="not-following">I am not Following</option>
                             </select>
@@ -219,12 +227,12 @@
         </div>
       </div>
 
-      <div class="modal-footer justify-content-center">
+      <!-- <div class="modal-footer justify-content-center">
         <button type="button" class="btn btn-secondary" (click)="closeModal()">Close</button>
         <ng-container class="text-center mt-3" *ngIf="submissions().length">
           <button class="btn btn-primary" (click)="saveLatestSubmission()">Submit</button>
         </ng-container>
-      </div>
+      </div> -->
     </div>
   </div>
 </div>

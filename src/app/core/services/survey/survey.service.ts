@@ -18,10 +18,16 @@ export class SurveyService {
       .toString()
       .padStart(2, '0')}-${today.getFullYear()}`;
 
+    // initialize compliance for each card
+    const surveysWithCompliance = surveys.map((s) => ({
+      ...s,
+      compliance: s.followStatus === 'following' ? 100 : 0, // initial default
+    }));
+
     const newSubmission: SurveySubmission = {
       id: uuidv4(),
       date: formattedDate,
-      surveys,
+      surveys: surveysWithCompliance,
       rating: 0,
       feedback: '',
     };
@@ -32,6 +38,12 @@ export class SurveyService {
   }
 
   updateSubmission(updated: SurveySubmission): void {
+    // recalc per-card compliance if followStatus changed
+    updated.surveys = updated.surveys.map((s) => ({
+      ...s,
+      compliance: s.followStatus === 'following' ? 100 : 0,
+    }));
+
     const updatedList = this._submissions().map((sub) => (sub.id === updated.id ? updated : sub));
     this._submissions.set(updatedList);
     this.saveSubmissionsToLocalStorage(updatedList);
@@ -53,5 +65,36 @@ export class SurveyService {
     } catch {
       return [];
     }
+  }
+
+  // // survey.service.ts
+  getFeedbackCompliance(submission: SurveySubmission): number {
+    const total = submission.surveys.length;
+    if (!total) return 0; // avoid divide by zero
+    const followingCount = submission.surveys.filter((s) => s.followStatus === 'following').length;
+    return Math.round((followingCount / total) * 100); // rounded %
+  }
+
+  // overall submission compliance based on per-card compliance
+  getCompliance(submission: SurveySubmission): number {
+    const total = submission.surveys.length;
+    if (!total) return 0;
+    const sum = submission.surveys.reduce((acc, s) => acc + (s.compliance ?? 0), 0);
+    return Math.round(sum / total); // average %
+  }
+
+  getOverallCompliance(): number {
+    const submissions = this._submissions();
+    if (!submissions.length) return 0;
+
+    let totalSurveys = 0;
+    let totalFollowing = 0;
+
+    submissions.forEach((submission) => {
+      totalSurveys += submission.surveys.length;
+      totalFollowing += submission.surveys.filter((s) => s.followStatus === 'following').length;
+    });
+
+    return totalSurveys ? Math.round((totalFollowing / totalSurveys) * 100) : 0;
   }
 }
