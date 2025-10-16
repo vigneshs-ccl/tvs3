@@ -65,7 +65,8 @@
                   </div>
                 </div>
                 <div class="d-flex flex-column align-items-end no-shrink">
-                  <span class="badge rounded-pill bg-brand text-white px-3 py-2 fw-semibold"
+                  <span
+                    class="bg-brand text-white py-cs-4 px-cs-16 text-sm-bs-inter-medium-white-14s-17l text-bs-inter-medium-white-12s-15l"
                     >{{ submittedSurveys().length }}/{{ submittedSurveys().length }}</span
                   >
                   <div
@@ -102,7 +103,7 @@
                           type="text"
                           formControlName="adviceGiven"
                           class="form-control rounded-pill input-pill custom-input"
-                          maxlength="80"
+                          maxlength="150"
                           aria-label="Advice Given"
                         />
                       </div>
@@ -116,7 +117,7 @@
                           type="text"
                           formControlName="frequency"
                           class="form-control rounded-pill input-pill custom-input"
-                          maxlength="80"
+                          maxlength="150"
                           aria-label="Frequency"
                         />
                       </div>
@@ -130,7 +131,7 @@
                           type="text"
                           formControlName="remarks"
                           class="form-control input-pill custom-input"
-                          maxlength="80"
+                          maxlength="150"
                           aria-label="Remarks"
                         />
                       </div>
@@ -212,9 +213,11 @@
                       </div>
                     </div>
                     <div class="d-flex flex-column align-items-end no-shrink">
-                      <span class="badge rounded-pill bg-brand text-white px-3 py-2 fw-semibold"
-                        >{{ submittedSurveys().length - i }}/{{ submittedSurveys().length }}</span
+                      <span
+                        class="bg-brand text-white py-cs-4 px-cs-16 text-sm-bs-inter-medium-white-14s-17l text-bs-inter-medium-white-12s-15l"
                       >
+                        {{ submittedSurveys().length - i }}/{{ submittedSurveys().length }}
+                      </span>
                       <div
                         class="text-bs-inter-medium-grey-mid-13s-18l text-lg-bs-inter-medium-grey-mid-15s-19l mt-2"
                       >
@@ -240,53 +243,54 @@
                     <div
                       class="d-block d-md-none text-bs-inter-medium-black-secondary-15s-19l text-center"
                     >
-                      Advices : Advice Given - Frequency - Comments - Your Progress
+                      Advices : Advice Given - Frequency - Comments
                     </div>
                   </div>
 
                   <!-- Survey list for this submission -->
                   @for (survey of submission.surveys; track survey) {
                     <div
-                      class="py-2 px-3 pe-md-5 d-flex flex-column flex-md-row justify-content-between align-items-start align-items-md-center w-100 border-bottom"
+                      class="survey-item py-2 px-3 pe-md-5 d-flex flex-column flex-md-row justify-content-between align-items-start align-items-md-center w-100 border-bottom"
                     >
-                      <div
-                        class="d-flex align-items-start justify-content-between flex-wrap flex-md-nowrap w-100 w-md-auto"
-                      >
-                        <div class="d-flex align-items-center w-100">
+                      <div class="d-flex flex-column w-100">
+                        <!-- Advice Section -->
+                        <div class="d-flex align-items-center">
                           <div
-                            class="d-flex w-100 w-md-75 align-items-center align-items-md-start justify-content-start"
-                          >
-                            <div
-                              class="badge rounded-circle bg-primary d-inline-flex align-items-center justify-content-center flex-shrink-0 me-2 blue-circle"
-                            ></div>
-                            <div class="text-bs-inter-reg-grey-dark-mid-13s-18l">
-                              {{ survey.adviceGiven }} - {{ survey.frequency }} -
-                              {{ survey.remarks }}
-                              <br />
-                              <!-- Mobile version -->
-                              <span class="d-md-none text-bs-inter-reg-black-light-12s-15l">
-                                {{
-                                  survey.followStatus === 'following'
-                                    ? 'I am Following'
-                                    : survey.followStatus === 'not-following'
-                                      ? 'I am not Following'
-                                      : ''
-                                }}
-                              </span>
-                            </div>
-                          </div>
-                          <div
-                            class="text-bs-inter-reg-black-light-13s-17l text-bs-inter-reg-black-light-14s-17l mt-2 mt-md-0 text-md-end w-25 w-md-auto d-none d-md-inline-block"
-                          >
-                            {{
-                              survey.followStatus === 'following'
-                                ? 'I am Following'
-                                : survey.followStatus === 'not-following'
-                                  ? 'I am not Following'
-                                  : ''
-                            }}
+                            class="badge rounded-circle bg-primary d-inline-flex align-items-center justify-content-center flex-shrink-0 me-2 blue-circle"
+                          ></div>
+                          <div class="text-bs-inter-reg-grey-dark-mid-13s-18l">
+                            {{ survey.adviceGiven }} - {{ survey.frequency }} - {{ survey.remarks }}
                           </div>
                         </div>
+
+                        <!-- Mobile-only: progress section -->
+                        <div
+                          class="d-md-none mt-2 ps-4 text-bs-inter-reg-black-light-12s-15l progress-mobile"
+                        >
+                          <span class="text-bs-inter-medium-grey-mid-12s-15l me-1"
+                            >Your Progress:</span
+                          >
+                          {{
+                            survey.followStatus === 'following'
+                              ? 'I am Following'
+                              : survey.followStatus === 'not-following'
+                                ? 'I am not Following'
+                                : ''
+                          }}
+                        </div>
+                      </div>
+
+                      <!-- Desktop version -->
+                      <div
+                        class="text-bs-inter-reg-black-light-13s-17l text-bs-inter-reg-black-light-14s-17l mt-2 mt-md-0 text-md-end w-25 w-md-auto d-none d-md-inline-block"
+                      >
+                        {{
+                          survey.followStatus === 'following'
+                            ? 'I am Following'
+                            : survey.followStatus === 'not-following'
+                              ? 'I am not Following'
+                              : ''
+                        }}
                       </div>
                     </div>
                   }
@@ -294,13 +298,11 @@
                   <!-- Feedback section -->
                   @if (submission.feedback && submission.feedback.trim() !== '') {
                     <div
-                      class="d-flex align-items-center justify-content-md-start justify-content-center mt-2 gap-5"
+                      class="d-flex align-items-center justify-content-md-start justify-content-center gap-5 gap-md-2 rounded mt-2 feedback-section py-cs-5 pe-3"
                     >
                       <div class="d-flex ms-md-3 gap-1">
                         <img src="./assets/icons/feedback.svg" alt="feedback" />
-                        <span class="text-bs-inter-medium-purple-12s-15l mb-1 ps-cs-6"
-                          >Feedback</span
-                        >
+                        <span class="text-bs-inter-medium-purple-12s-15l ps-cs-6">Feedback</span>
                       </div>
 
                       <div class="text-bs-inter-reg-grey-medium-light-13s-18l ps-cs-28">
@@ -315,8 +317,8 @@
         </div>
       </div>
       <div class="modal-footer justify-content-lg-end justify-content-center">
-        <button type="button" class="btn btn-secondary" (click)="clearAll()">Close</button>
-        <button type="button" class="btn btn-primary custom-submit-btn" (click)="onSubmit()">
+        <button type="button" class="btn btn-cancel" (click)="clearAll()">Cancel</button>
+        <button type="button" class="btn custom-submit-btn" (click)="onSubmit()">
           Submit
         </button>
       </div>

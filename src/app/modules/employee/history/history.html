@@ -20,7 +20,10 @@
           <h6 class="mb-0 text-sm-bs-inter-sb-grey-dark-18s-21l text-bs-inter-sb-grey-dark-15s-19l">
             Physical wellbeing Coaching History
           </h6>
-          <span class="text-bs-inter-medium-green-16s-20l mt-1 mt-md-0 ms-md-3">
+          <span
+            class="text-bs-inter-medium-green-16s-20l mt-1 mt-md-0 ms-md-3"
+            *ngIf="getOverallCompliance() > 0"
+          >
             Compliance: {{ getOverallCompliance() }}%
           </span>
         </div>
@@ -78,9 +81,11 @@
                     </div>
                   </div>
                   <div class="d-flex flex-column align-items-end no-shrink">
-                    <span class="badge rounded-pill bg-brand text-white px-3 py-2 fw-semibold"
-                      >{{ submissions().length - i }}/{{ submissions().length }}</span
+                    <span
+                      class="bg-brand text-white py-cs-4 px-cs-16 text-sm-bs-inter-medium-white-14s-17l text-bs-inter-medium-white-12s-15l"
                     >
+                      {{ submissions().length - i }}/{{ submissions().length }}
+                    </span>
                     <div
                       class="text-bs-inter-medium-grey-mid-13s-18l text-lg-bs-inter-medium-grey-mid-15s-19l mt-2"
                     >
@@ -106,79 +111,43 @@
                   <div
                     class="d-block d-md-none text-bs-inter-medium-black-secondary-15s-19l text-center"
                   >
-                    Advices : Advice Given - Frequency - Comments - Your Progress
+                    Advices : Advice Given - Frequency - Comments
                   </div>
                 </div>
 
                 <!-- Survey list for this submission -->
                 <div *ngFor="let survey of submission.surveys; trackBy: trackBySurvey">
                   <div
-                    class="py-2 px-3 pe-md-5 d-flex flex-column flex-md-row justify-content-between align-items-start align-items-md-center w-100 border-bottom"
+                    class="survey-item py-2 px-3 pe-md-5 d-flex flex-column flex-md-row justify-content-between align-items-start align-items-md-center w-100 border-bottom"
                   >
-                    <!-- Left section -->
-                    <div
-                      class="d-flex align-items-start justify-content-between flex-wrap flex-md-nowrap w-100 w-md-auto"
-                    >
-                      <div class="d-flex align-items-center w-100">
+                    <div class="d-flex flex-column w-100">
+                      <!-- Advice Section -->
+                      <div class="d-flex align-items-center">
                         <div
-                          class="d-flex w-100 w-md-75 align-items-center align-items-md-start justify-content-start"
-                        >
-                          <div
-                            class="badge rounded-circle bg-primary d-inline-flex align-items-center justify-content-center flex-shrink-0 me-2 blue-circle"
-                          ></div>
-                          <div class="text-bs-inter-reg-grey-dark-mid-13s-18l">
-                            {{ survey.adviceGiven }} - {{ survey.frequency }} - {{ survey.remarks }}
-                            <br />
-
-                            <!-- Mobile dropdown (editable only for latest submission) -->
-                            <span
-                              *ngIf="first"
-                              class="d-md-none text-bs-inter-reg-black-light-12s-15l"
-                            >
-                              <div class="follow-dropdown">
-                                <select
-                                  [(ngModel)]="survey.followStatus"
-                                  (ngModelChange)="onFollowStatusChange(submission)"
-                                >
-                                  <option value="" disabled>Select</option>
-                                  <option value="following">I am Following</option>
-                                  <option value="not-following">I am not Following</option>
-                                </select>
-                                <img
-                                  class="dropdown-icon"
-                                  src="./assets/icons/dropdown.svg"
-                                  alt="dropdown icon"
-                                />
-                              </div>
-                            </span>
-
-                            <!-- Mobile readonly for previous submissions -->
-                            <span
-                              *ngIf="!first"
-                              class="d-md-none"
-                            >
-                              {{
-                                survey.followStatus === 'following'
-                                  ? 'I am Following'
-                                  : survey.followStatus === 'not-following'
-                                    ? 'I am not Following'
-                                    : ''
-                              }}
-                            </span>
-                          </div>
+                          class="badge rounded-circle bg-primary d-inline-flex align-items-center justify-content-center flex-shrink-0 me-2 blue-circle"
+                        ></div>
+                        <div class="text-bs-inter-reg-grey-dark-mid-13s-18l">
+                          {{ survey.adviceGiven }} - {{ survey.frequency }} - {{ survey.remarks }}
                         </div>
+                      </div>
 
-                        <!-- Desktop dropdown (editable only for latest submission) -->
-                        <div
-                          class="text-bs-inter-reg-black-light-13s-17l text-bs-inter-reg-black-light-14s-17l mt-2 mt-md-0 text-md-end w-25 w-md-auto d-none d-md-inline-block"
+                      <!-- Mobile-only: progress section -->
+                      <div
+                        class="d-md-none mt-2 ps-4 text-bs-inter-reg-black-light-12s-15l progress-mobile"
+                      >
+                        <span class="text-bs-inter-medium-grey-mid-12s-15l me-1"
+                          >Your Progress:</span
                         >
-                          <div *ngIf="first" class="follow-dropdown">
+
+                        <!-- Editable dropdown for latest submission -->
+                        <ng-container *ngIf="first; else readonlyMobile">
+                          <div class="follow-dropdown d-inline-block">
                             <select
                               [(ngModel)]="survey.followStatus"
                               (ngModelChange)="onFollowStatusChange(submission)"
                             >
                               <option value="" disabled>Select</option>
-                              <option value="following" selected>I am Following</option>
+                              <option value="following">I am Following</option>
                               <option value="not-following">I am not Following</option>
                             </select>
                             <img
@@ -187,19 +156,52 @@
                               alt="dropdown icon"
                             />
                           </div>
+                        </ng-container>
 
-                          <!-- Desktop readonly for previous submissions -->
-                          <span *ngIf="!first">
-                            {{
-                              survey.followStatus === 'following'
-                                ? 'I am Following'
-                                : survey.followStatus === 'not-following'
-                                  ? 'I am not Following'
-                                  : ''
-                            }}
-                          </span>
-                        </div>
+                        <!-- Readonly for previous -->
+                        <ng-template #readonlyMobile>
+                          {{
+                            survey.followStatus === 'following'
+                              ? 'I am Following'
+                              : survey.followStatus === 'not-following'
+                                ? 'I am not Following'
+                                : ''
+                          }}
+                        </ng-template>
                       </div>
+                    </div>
+
+                    <!-- Desktop version -->
+                    <div
+                      class="text-bs-inter-reg-black-light-13s-17l text-bs-inter-reg-black-light-14s-17l mt-2 mt-md-0 text-md-end w-25 w-md-auto d-none d-md-inline-block"
+                    >
+                      <!-- Editable dropdown for latest submission -->
+                      <div *ngIf="first; else readonlyDesktop" class="follow-dropdown">
+                        <select
+                          [(ngModel)]="survey.followStatus"
+                          (ngModelChange)="onFollowStatusChange(submission)"
+                        >
+                          <option value="" disabled>Select</option>
+                          <option value="following" selected>I am Following</option>
+                          <option value="not-following">I am not Following</option>
+                        </select>
+                        <img
+                          class="dropdown-icon"
+                          src="./assets/icons/dropdown.svg"
+                          alt="dropdown icon"
+                        />
+                      </div>
+
+                      <!-- Readonly for previous -->
+                      <ng-template #readonlyDesktop>
+                        {{
+                          survey.followStatus === 'following'
+                            ? 'I am Following'
+                            : survey.followStatus === 'not-following'
+                              ? 'I am not Following'
+                              : ''
+                        }}
+                      </ng-template>
                     </div>
                   </div>
                 </div>
@@ -207,13 +209,14 @@
                 <!-- Feedback section -->
                 <div
                   *ngIf="submission.feedback && submission.feedback.trim() !== ''"
-                  class="d-flex align-items-center justify-content-md-start justify-content-center mt-2 gap-5"
+                  class="d-flex align-items-center justify-content-md-start justify-content-center gap-5 gap-md-2 rounded mt-2 feedback-section py-cs-5 pe-3"
                 >
-                  <div class="d-flex ms-md-5 gap-1">
+                  <div class="d-flex ms-md-3 gap-1">
                     <img src="./assets/icons/feedback.svg" alt="feedback" />
-                    <span class="text-bs-inter-medium-purple-12s-15l mb-1">Feedback</span>
+                    <span class="text-bs-inter-medium-purple-12s-15l ps-cs-6">Feedback</span>
                   </div>
-                  <div class="text-bs-inter-reg-grey-medium-light-13s-18l ms-md-5">
+
+                  <div class="text-bs-inter-reg-grey-medium-light-13s-18l ps-cs-28">
                     {{ submission.feedback }}
                   </div>
                 </div>
@@ -226,13 +229,6 @@
           </ng-template>
         </div>
       </div>
-
-      <!-- <div class="modal-footer justify-content-center">
-        <button type="button" class="btn btn-secondary" (click)="closeModal()">Close</button>
-        <ng-container class="text-center mt-3" *ngIf="submissions().length">
-          <button class="btn btn-primary" (click)="saveLatestSubmission()">Submit</button>
-        </ng-container>
-      </div> -->
     </div>
   </div>
 </div>

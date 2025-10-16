@@ -15,7 +15,7 @@ export const routes: Routes = [
     canActivate: [AuthGuard],
   },
   {
-    path: 'coach',
+    path: 'coach1',
     loadChildren: () => import('./modules/coach/coach.module').then((m) => m.CoachModule),
     canActivate: [AuthGuard],
   },
@@ -26,11 +26,11 @@ export const routes: Routes = [
   },
   {
     path: '',
-    redirectTo: '/survey',
+    redirectTo: '/coach',
     pathMatch: 'full',
   },
   {
-    path: 'survey',
+    path: 'coach',
     component: Survey,
   },
   {
@@ -43,6 +43,6 @@ export const routes: Routes = [
   },
   {
     path: '**',
-    redirectTo: '/survey',
+    redirectTo: '/coach',
   },
 ];
