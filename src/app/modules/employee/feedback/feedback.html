@@ -26,7 +26,10 @@
           <h6 class="mb-0 text-sm-bs-inter-sb-grey-dark-18s-21l text-bs-inter-sb-grey-dark-15s-19l">
             Physical wellbeing Coaching History
           </h6>
-          <span class="text-bs-inter-medium-green-16s-20l mt-1 mt-md-0 ms-md-3" *ngIf="getCompliance() > 0">
+          <span
+            class="text-bs-inter-medium-green-16s-20l mt-1 mt-md-0 ms-md-3"
+            *ngIf="getCompliance() > 0"
+          >
             Compliance : {{ getCompliance() }}%
           </span>
         </div>
@@ -112,7 +115,10 @@
                   >
                     <span class="text-bs-inter-medium-grey-mid-12s-15l me-1">Your Progress:</span>
                     <div class="follow-dropdown">
-                      <select [(ngModel)]="survey.followStatus">
+                      <select
+                        [(ngModel)]="survey.followStatus"
+                        (change)="onFollowStatusChange(survey, survey.followStatus || '')"
+                      >
                         <option value="" disabled>Select</option>
                         <option value="following">I am Following</option>
                         <option value="not-following">I am not Following</option>
@@ -123,6 +129,14 @@
                         alt="dropdown icon"
                       />
                     </div>
+
+                    <!-- Error message for mobile -->
+                    <div
+                      *ngIf="submitted && followStatusErrors[survey.adviceGiven]"
+                      class="text-danger mt-1 small d-md-none"
+                    >
+                      Please select
+                    </div>
                   </div>
                 </div>
 
@@ -131,7 +145,10 @@
                   class="text-bs-inter-reg-black-light-13s-17l text-bs-inter-reg-black-light-14s-17l mt-2 mt-md-0 text-md-end w-25 w-md-auto d-none d-md-inline-block"
                 >
                   <div class="follow-dropdown">
-                    <select [(ngModel)]="survey.followStatus">
+                    <select
+                      [(ngModel)]="survey.followStatus"
+                      (change)="onFollowStatusChange(survey, survey.followStatus || '')"
+                    >
                       <option value="" disabled>Select</option>
                       <option value="following">I am Following</option>
                       <option value="not-following">I am not Following</option>
@@ -141,6 +158,14 @@
                       src="./assets/icons/dropdown.svg"
                       alt="dropdown icon"
                     />
+                  </div>
+
+                  <!-- Error message for desktop -->
+                  <div
+                    *ngIf="submitted && followStatusErrors[survey.adviceGiven]"
+                    class="text-danger mt-1 small d-none d-md-block text-nowrap"
+                  >
+                    Please select
                   </div>
                 </div>
               </div>
@@ -179,9 +204,7 @@
       <!-- Footer -->
       <div class="modal-footer justify-content-lg-end justify-content-center">
         <button type="button" class="btn btn-cancel" (click)="closeModal()">Cancel</button>
-        <button type="button" class="btn custom-submit-btn" (click)="onSubmit()">
-          Submit
-        </button>
+        <button type="button" class="btn custom-submit-btn" (click)="onSubmit()">Submit</button>
       </div>
     </div>
   </div>

@@ -18,6 +18,8 @@ export class Feedback {
   selectedSubmission: SurveySubmission | null = null;
   selectedSubmissionIndex: number = 0;
   submissionRating: number = 0;
+  followStatusErrors: { [key: string]: boolean } = {};
+  submitted = false; // track if user clicked submit
 
   openModal(submission: SurveySubmission) {
     // Track the index
@@ -30,7 +32,8 @@ export class Feedback {
     if (this.selectedSubmission?.surveys?.length) {
       this.selectedSubmission.surveys = this.selectedSubmission.surveys.map((s: SurveyData) => ({
         ...s,
-        followStatus: s.followStatus ?? '', // use '' if undefined or null
+        followStatus: s.followStatus ?? '',
+        compliance: s.compliance ?? 0,
       }));
     }
     this.isModalOpen = true;
@@ -39,6 +42,8 @@ export class Feedback {
   closeModal() {
     this.isModalOpen = false;
     this.selectedSubmission = null;
+    this.followStatusErrors = {};
+    this.submitted = false;
   }
 
   get surveys(): SurveySubmission[] {
@@ -60,19 +65,61 @@ export class Feedback {
     }
   }
 
-  onFollowStatusChange(survey: SurveyData, status: 'following' | 'not-following') {
-    if (this.selectedSubmission) {
-      survey.followStatus = status;
+  onFollowStatusChange(survey: SurveyData, status: 'following' | 'not-following' | '') {
+    survey.followStatus = status;
+    // Recalculate compliance dynamically in the modal
+    if (status === 'following') {
+      survey.compliance = 100;
+    } else if (status === 'not-following') {
+      survey.compliance = 0;
+    } else {
+      survey.compliance = 0;
+    }
+
+    // Clear error immediately after user selects a valid option
+    if (status === 'following' || status === 'not-following') {
+      this.followStatusErrors[survey.adviceGiven] = false;
     }
   }
 
-  // compliance calculation
-  getCompliance(): number {
-    if (!this.selectedSubmission) return 0;
-    return this.surveyService.getCompliance(this.selectedSubmission);
+  validateBeforeSubmit(): boolean {
+    if (!this.selectedSubmission) return false;
+    this.submitted = true;
+    let valid = true;
+    this.selectedSubmission.surveys.forEach((s) => {
+      // Only mark error if empty
+      this.followStatusErrors[s.adviceGiven] = !s.followStatus;
+      if (!s.followStatus) valid = false;
+    });
+
+    return valid;
   }
 
+  //  Dynamic compliance calculation for display only
+  getCompliance(): number {
+    if (!this.selectedSubmission) return 0;
+
+    // if (!this.validateBeforeSubmit()) {
+    //   return 0; // stop submission if validation fails
+    // }
+
+    const total = this.selectedSubmission.surveys.length;
+    if (!total) return 0;
+
+    const sum = this.selectedSubmission.surveys.reduce((acc, s) => acc + (s.compliance ?? 0), 0);
+
+    return Math.round(sum / total);
+  }
+
+  // compliance calculation
+  // getCompliance(): number {
+  //   if (!this.selectedSubmission) return 0;
+  //   return this.surveyService.getCompliance(this.selectedSubmission);
+  // }
+
   onSubmit() {
+    if (!this.validateBeforeSubmit()) return;
+
     if (!this.selectedSubmission) return;
 
     this.selectedSubmission.surveys = this.selectedSubmission.surveys.map((s) => ({

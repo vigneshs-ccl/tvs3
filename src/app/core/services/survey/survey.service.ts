@@ -67,7 +67,7 @@ export class SurveyService {
     }
   }
 
-  // // survey.service.ts
+  // survey.service.ts
   getFeedbackCompliance(submission: SurveySubmission): number {
     const total = submission.surveys.length;
     if (!total) return 0; // avoid divide by zero
