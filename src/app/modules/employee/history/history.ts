@@ -52,7 +52,6 @@ export class History {
     return item.adviceGiven + index;
   }
 
-
   // overall compliance calculation
   getOverallCompliance(): number {
     return this.surveyService.getOverallCompliance();

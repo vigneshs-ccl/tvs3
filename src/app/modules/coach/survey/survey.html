@@ -83,7 +83,9 @@
               <div
                 class="row g-3 mb-2 px-1 small text-muted fw-medium align-items-center d-none d-lg-flex ps-2"
               >
-                <div class="col-3 text-bs-inter-reg-grey-medium-light-13s-18l me-3">Advice Given</div>
+                <div class="col-3 text-bs-inter-reg-grey-medium-light-13s-18l me-3">
+                  Advice Given
+                </div>
                 <div class="col-4 text-bs-inter-reg-grey-medium-light-13s-18l ps-5">Frequency</div>
                 <div class="col-3 text-bs-inter-reg-grey-medium-light-13s-18l ps-3">Remarks</div>
               </div>
@@ -135,6 +137,14 @@
                           aria-label="Remarks"
                         />
                       </div>
+
+                      <!-- Mobile: same message below the section -->
+                      <div
+                        class="text-danger d-block d-lg-none mt-1 ms-2"
+                        *ngIf="survey.invalid && survey.touched"
+                      >
+                        Please fill in all fields for row {{ $index + 1 }}
+                      </div>
                       <!--  Button column -->
                       <div
                         class="col-auto action-buttons d-flex justify-content-end justify-content-lg-end gap-1 mt-sm-3 pt-2 pr-5 pt-lg-0 pr-lg-0"
@@ -161,6 +171,14 @@
                           </button>
                         }
                       </div>
+                    </div>
+                    <!-- Validation messages -->
+                    <!-- Desktop (≥992px) -->
+                    <div
+                      class="text-danger d-none d-lg-block ms-3 "
+                      *ngIf="survey.invalid && survey.touched"
+                    >
+                      Please fill in all fields for row {{ $index + 1 }}
                     </div>
                   }
                 </div>
