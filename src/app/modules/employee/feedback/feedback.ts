@@ -20,6 +20,8 @@ export class Feedback {
   submissionRating: number = 0;
   followStatusErrors: { [key: string]: boolean } = {};
   submitted = false; // track if user clicked submit
+  ratingError = false;
+  feedbackError = false;
 
   openModal(submission: SurveySubmission) {
     // Track the index
@@ -62,6 +64,16 @@ export class Feedback {
   onRatingChange(rating: number) {
     if (this.selectedSubmission) {
       this.selectedSubmission.rating = rating;
+      if (rating > 0) {
+        this.ratingError = false; // clear error once user rates
+      }
+    }
+  }
+
+  //  When feedback is typed, remove error instantly
+  onFeedbackChange() {
+    if (this.selectedSubmission?.feedback?.trim()) {
+      this.feedbackError = false; // clear error as user types
     }
   }
 
@@ -86,11 +98,28 @@ export class Feedback {
     if (!this.selectedSubmission) return false;
     this.submitted = true;
     let valid = true;
+
+    // Reset all errors
+    // this.followStatusErrors = {};
+    this.ratingError = false;
+    this.feedbackError = false;
     this.selectedSubmission.surveys.forEach((s) => {
       // Only mark error if empty
       this.followStatusErrors[s.adviceGiven] = !s.followStatus;
       if (!s.followStatus) valid = false;
     });
+
+    // Validate rating
+    if (!this.selectedSubmission.rating || this.selectedSubmission.rating === 0) {
+      this.ratingError = true;
+      valid = false;
+    }
+
+    // Validate feedback
+    if (!this.selectedSubmission.feedback || this.selectedSubmission.feedback.trim() === '') {
+      this.feedbackError = true;
+      valid = false;
+    }
 
     return valid;
   }
@@ -99,10 +128,6 @@ export class Feedback {
   getCompliance(): number {
     if (!this.selectedSubmission) return 0;
 
-    // if (!this.validateBeforeSubmit()) {
-    //   return 0; // stop submission if validation fails
-    // }
-
     const total = this.selectedSubmission.surveys.length;
     if (!total) return 0;
 
@@ -110,12 +135,6 @@ export class Feedback {
 
     return Math.round(sum / total);
   }
-
-  // compliance calculation
-  // getCompliance(): number {
-  //   if (!this.selectedSubmission) return 0;
-  //   return this.surveyService.getCompliance(this.selectedSubmission);
-  // }
 
   onSubmit() {
     if (!this.validateBeforeSubmit()) return;

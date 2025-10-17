@@ -174,7 +174,7 @@
             <!-- Ratings -->
             <div
               *ngIf="selectedSubmission"
-              class="d-flex align-items-center justify-content-center my-cs-25"
+              class="d-flex align-items-center justify-content-center my-cs-25 flex-column"
             >
               <app-star-rating
                 [(rating)]="selectedSubmission.rating"
@@ -183,6 +183,14 @@
                 [starSize]="'34px'"
                 (ratingChange)="onRatingChange($event)"
               ></app-star-rating>
+
+              <!-- Rating validation errors -->
+              <div
+                *ngIf="submitted && ratingError"
+                class="text-danger small text-center d-block mt-2"
+              >
+                Please provide a rating
+              </div>
             </div>
 
             <!-- Feedback textarea -->
@@ -194,7 +202,13 @@
                   rows="4"
                   [(ngModel)]="selectedSubmission.feedback"
                   maxlength="250"
+                  (input)="onFeedbackChange()"
                 ></textarea>
+                <!-- Feedback validation errors -->
+
+                <div *ngIf="submitted && feedbackError" class="text-danger mt-1 small text-end">
+                  Please enter your feedback
+                </div>
               </div>
             </div>
           </div>
