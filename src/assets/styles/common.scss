@@ -64,6 +64,18 @@
   transition: all 0.2s ease;
 }
 
+.btn-email {
+  border-radius: 19px;
+  border: 1px solid #5b2ae3; 
+  color: #5b2ae3; 
+  background-color: #ffffff; /* white background */
+  padding: 0.2rem 1rem;
+  font-size: 13px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
 .custom-submit-btn {
   border-radius: 19px; /* match Cancel button */
   padding:8px 20px;

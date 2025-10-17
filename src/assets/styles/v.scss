@@ -39,8 +39,11 @@ $colors: (
   "grey-dark-mid": #555555,
   "black-secondary": #2B2B2B,
   "black": #1C1C1C,
+  "black-flag":#131313,
   "black-mid": #414141,
+  "black-lite":#484848,
   "black-light": #868686,
+  "black-lg":#848484,
   "purple": #5B2AE3,
   "violet": #8357FE,
   "blue": #3360F4,
@@ -48,7 +51,9 @@ $colors: (
   "lavender": #EFEAFE,
   "orange": #FFA700,
   "orange-light": #FFB800,
+  "yellow":#FFBE00,
   "green": #0FB86E,
+  "green-light": #17B972,
   "red": #FF0000,
   "blue-transparent": #0000C73B,
   "black-transparent": #00000029
@@ -64,7 +69,8 @@ $size-line: (
   15: 19,
   16: 20,
   18: 21,
-  21: 25
+  21: 25,
+  44: 54
 );
 
 // Base font utility

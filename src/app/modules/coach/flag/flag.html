@@ -1,0 +1,39 @@
+<div class="d-flex gap-3">
+  @for (card of cardData; track card.id) {
+    <div class="d-flex flex-column justify-content-between custom-box px-cs-16 py-cs-20">
+      <div class="d-flex justify-content-between align-items-center">
+        <div class="d-flex gap-1 align-items-center">
+          <div class="text-bs-inter-medium-black-flag-16s-20l">{{ card.title }}</div>
+          <div class="text-bs-inter-medium-black-lg-12s-15l">{{ card.unit }}</div>
+          <div><img src="./assets/icons/flag.svg" alt="flag" /></div>
+        </div>
+        <div (click)="openModal(card)" class="cursor">
+          <img src="./assets/icons/add-gray.svg" alt="add" class="add-icon" />
+        </div>
+      </div>
+      @if (card.value < 100) {
+        <div class="text-center text-bs-inter-medium-green-light-44s-54l">
+          {{ card.value }}
+        </div>
+      } @else {
+        <div class="text-center text-bs-inter-medium-yellow-44s-54l">
+          {{ card.value }}
+        </div>
+      }
+      <div class="text-center">
+        <div class="text-bs-roboto-reg-black-lite-14s-17l">Last updated on</div>
+        <div class="text-bs-roboto-reg-black-lg-12s-15l">dd-mm-yyyy</div>
+      </div>
+    </div>
+  }
+</div>
+
+<app-custom-modal
+  [isOpen]="showModal"
+  [title]="'Add Flag for ' + (selectedCard?.title || '')"
+  [compliance]="'90%'"
+  [size]="'xl'"
+  (close)="closeModal()"
+>
+  <p>This is the modal content. You can put any HTML here.</p>
+</app-custom-modal>

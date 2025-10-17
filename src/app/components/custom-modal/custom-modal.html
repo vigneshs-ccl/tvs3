@@ -24,9 +24,6 @@
           <h6 class="mb-0 text-sm-bs-inter-sb-grey-dark-18s-21l text-bs-inter-sb-grey-dark-15s-19l">
             {{ title }}
           </h6>
-          <span *ngIf="compliance" class="text-bs-inter-medium-green-16s-20l mt-1 mt-md-0 ms-md-3">
-            Compliance : {{ compliance }}
-          </span>
         </div>
 
         <button
@@ -43,8 +40,8 @@
 
       <!-- Footer -->
       <div class="modal-footer justify-content-lg-end justify-content-center">
-        <button type="button" class="btn btn-secondary" (click)="closeModal()">Close</button>
-        <button type="button" class="btn btn-primary custom-submit-btn" (click)="submitModal()">
+        <button type="button" class="btn btn-cancel" (click)="closeModal()">Close</button>
+        <button type="button" class="btn custom-submit-btn" (click)="submitModal()">
           Submit
         </button>
       </div>

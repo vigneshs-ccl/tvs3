@@ -3,6 +3,7 @@ import { AuthGuard } from '@app/core/guards/auth.guard';
 import { Survey } from '@app/modules/coach/survey/survey';
 import { Feedback } from './modules/employee/feedback/feedback';
 import { History } from './modules/employee/history/history';
+import { Flag } from './modules/coach/flag/flag';
 
 export const routes: Routes = [
   {
@@ -25,11 +26,6 @@ export const routes: Routes = [
     canActivate: [AuthGuard],
   },
   {
-    path: '',
-    redirectTo: '/coach',
-    pathMatch: 'full',
-  },
-  {
     path: 'coach',
     component: Survey,
   },
@@ -42,7 +38,16 @@ export const routes: Routes = [
     component: History,
   },
   {
+    path: 'flag',
+    component: Flag,
+  },
+  {
+    path: '',
+    redirectTo: '/flag',
+    pathMatch: 'full',
+  },
+  {
     path: '**',
-    redirectTo: '/coach',
+    redirectTo: '/flag',
   },
 ];
