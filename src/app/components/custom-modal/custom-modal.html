@@ -10,7 +10,7 @@
       'modal-sm': size === 'sm',
       'modal-md': size === 'md',
       'modal-lg': size === 'lg',
-      'modal-xl': size === 'xl'
+      'modal-xl': size === 'xl',
     }"
   >
     <div class="modal-content custom-modal-spacing">
@@ -21,7 +21,10 @@
         <div
           class="d-flex flex-column flex-md-row align-items-center align-items-md-center gap-1 gap-md-2 w-100"
         >
-          <h6 class="mb-0 text-sm-bs-inter-sb-grey-dark-18s-21l text-bs-inter-sb-grey-dark-15s-19l">
+          <h6
+            class="mb-0 text-bs-inter-sb-grey-dark-18s-21l"
+            [innerHTML]="title"
+          >
             {{ title }}
           </h6>
         </div>
@@ -41,9 +44,7 @@
       <!-- Footer -->
       <div class="modal-footer justify-content-lg-end justify-content-center">
         <button type="button" class="btn btn-cancel" (click)="closeModal()">Close</button>
-        <button type="button" class="btn custom-submit-btn" (click)="submitModal()">
-          Submit
-        </button>
+        <button type="button" class="btn custom-submit-btn" (click)="submitModal()">Submit</button>
       </div>
     </div>
   </div>

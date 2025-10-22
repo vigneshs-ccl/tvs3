@@ -1,4 +1,4 @@
-
+@use 'common' as *;
 .custom-box{
   width:180px;
   height: 195px;
@@ -17,3 +17,180 @@
 .cursor{
   cursor: pointer;
 }
+
+.add-icon-wrapper {
+  width: 22px;       // fixed width
+  height: 22px;      // fixed height
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: 50%;  // circle
+  transition: background-color 0.3s ease;
+
+  &.add:hover {
+    background-color: #5B2AE3;
+  }
+
+  &.remove:hover {
+    background-color: #FF0C0B;
+  }
+
+  .add-icon {
+    width: 14px;  // icon size
+    height: 14px;
+    display: block;
+    filter: none;
+  }
+
+  &.add:hover .add-icon,
+  &.remove:hover .add-icon {
+    filter: brightness(0) invert(1); // icon turns white
+  }
+}
+
+
+.flag-body{
+  height: 380px;
+  margin-top: 22px;
+}
+
+.custom-date-wrapper {
+  position: relative;
+
+  .custom-date-input {
+    width: 100%;
+    padding-right: 2.5rem; // leave space for icon
+    cursor: pointer;
+
+    // remove native calendar icon
+    &::-webkit-calendar-picker-indicator {
+      display: none;
+      -webkit-appearance: none;
+    }
+    &::-moz-calendar-picker-indicator {
+      display: none;
+    }
+    &::-ms-clear {
+      display: none;
+      width: 0;
+      height: 0;
+    }
+  }
+
+  .calendar-icon {
+    position: absolute;
+    top: 73%;
+    right: 1.5rem; // space from right
+    transform: translateY(-50%);
+    width: 1rem;  // bigger than 1rem for better click
+    height: 1rem;
+    cursor: pointer;
+    pointer-events: auto; // allow click
+  }
+}
+
+// tooltip styles
+.flag-tooltip-container {
+  position: relative;
+  display: inline-block;
+
+  .flag-icon {
+    cursor: pointer;
+    transition: transform 0.2s ease-in-out;
+  }
+
+  .flag-tooltip {
+    position: absolute;
+    top: 120%;
+    left: 50%;
+    transform: translateX(-50%);
+    background: white;
+    border-radius: 10px;
+    border: none;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
+    padding: 10px 14px;
+    width: 350px;
+    min-height: 100px;
+    display: none;
+    z-index: 1000;
+    word-wrap: break-word;
+    white-space: normal;
+    transition: opacity 0.25s ease, transform 0.25s ease;
+    opacity: 0;
+  }
+
+   &:hover .flag-tooltip {
+    display: block;
+    opacity: 1;
+  }
+
+  /*  Adjust when near the left edge */
+  &.align-left .flag-tooltip {
+    left: 0;
+    transform: translateX(0);
+  }
+
+  /*  Adjust when near the right edge */
+  &.align-right .flag-tooltip {
+    right: 0;
+    left: auto;
+    transform: translateX(0);
+  }
+}
+
+/*  Responsive for smaller devices */
+@media (max-width: 768px) {
+  .flag-tooltip {
+    width: 260px !important;
+    padding: 8px 10px;
+    min-height: auto;
+    top: 110%;
+  }
+}
+
+@media (max-width: 480px) {
+  .flag-tooltip {
+    width: 200px !important;
+    font-size: 12px;
+  }
+}
+
+.w-md-400px {
+  width: 100%;
+  max-width: 500px;
+}
+
+@media (min-width: 768px) {
+  .w-md-400px {
+    width: 400px;
+  }
+}
+@media (max-width: 767.98px) {
+  .d-flex.flex-column.flex-md-row {
+    flex-direction: row; 
+    overflow: hidden;
+  }
+
+  .left-column {
+    flex-shrink: 0;
+    height: 100%; /* full height */
+  }
+
+  .right-column {
+    flex-grow: 1;
+    display: flex;
+    flex-wrap: wrap; /* wrap cards */
+    gap: 1rem; /* spacing between cards */
+    overflow-y: auto; /* scroll if cards overflow */
+    padding-bottom: 1rem;
+  }
+
+  .custom-box {
+    min-width: 150px;
+    max-width: 100%;
+    margin-bottom: 0.5rem;
+  }
+}
+
+
+
