@@ -1,4 +1,5 @@
 @use 'common' as *;
+
 .custom-box{
   width:180px;
   height: 195px;
@@ -50,19 +51,18 @@
 
 
 .flag-body{
-  height: 380px;
-  margin-top: 22px;
+  // height: 290px;
+  margin-top: 10px;
 }
 
-.custom-date-wrapper {
+.input-icon-wrapper {
   position: relative;
 
   .custom-date-input {
     width: 100%;
-    padding-right: 2.5rem; // leave space for icon
+    // padding-right: 2.5rem; // leave space for icon
     cursor: pointer;
 
-    // remove native calendar icon
     &::-webkit-calendar-picker-indicator {
       display: none;
       -webkit-appearance: none;
@@ -75,19 +75,25 @@
       width: 0;
       height: 0;
     }
+
+     border-radius: 10px;
+    border: 1px solid #ccc;
+    height: 42px;
   }
 
   .calendar-icon {
     position: absolute;
-    top: 73%;
-    right: 1.5rem; // space from right
-    transform: translateY(-50%);
-    width: 1rem;  // bigger than 1rem for better click
+    top: 0;
+    bottom: 0;
+    right: 1.5rem;
+    margin: auto 0; // vertically center
+    width: 1rem;
     height: 1rem;
     cursor: pointer;
-    pointer-events: auto; // allow click
+    pointer-events: auto;
   }
 }
+
 
 // tooltip styles
 .flag-tooltip-container {
@@ -138,6 +144,12 @@
   }
 }
 
+.modal-footer {
+  border-top: none !important;
+  padding-right: 0rem!important;
+}
+
+
 /*  Responsive for smaller devices */
 @media (max-width: 768px) {
   .flag-tooltip {
@@ -146,6 +158,7 @@
     min-height: auto;
     top: 110%;
   }
+  
 }
 
 @media (max-width: 480px) {
@@ -176,6 +189,11 @@
     height: 100%; /* full height */
   }
 
+  .flag-body{
+    // height: 400px;
+    overflow: auto;
+  }
+
   .right-column {
     flex-grow: 1;
     display: flex;
@@ -190,7 +208,58 @@
     max-width: 100%;
     margin-bottom: 0.5rem;
   }
+
+.custom-dropdown .dropdown-menu {
+    position: fixed !important;   // break out of modal body
+    top: auto !important;
+    bottom: auto !important;
+    left: 5vw !important;         // small offset from sides
+    width: 90vw !important;       // responsive width
+    max-height: 60vh !important;  // max height to prevent overflow
+    overflow-y: auto !important;
+    z-index: 2000 !important;     // above modal
+  }
+}
+
+/* Desktop-only dropdown overlay */
+@media (min-width: 769px) {
+    .custom-dropdown .dropdown-menu {
+    position: fixed !important;  /* detach from modal body */
+    top: auto !important;        /* we will set via JS (optional) */
+    left: auto !important;       /* we will set via JS (optional) */
+    width: auto !important;      /* match button width */
+    min-width: 250px;
+    max-height: 300px !important;
+    overflow-y: auto !important;
+    z-index: 2000 !important;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.15);
+    border-radius: 8px;
+  }
+
+  .custom-dropdown.show .dropdown-menu {
+    display: block;
+  }
+}
+
+/* Multi-select dropdown */
+.custom-dropdown {
+  position: relative; /* container relative for absolute positioning */
+
+  .dropdown-menu {
+    display: none; /* default hidden */
+  }
+
+  &.show .dropdown-menu {
+    display: block;
+  }
 }
 
 
+// .flag-modal-wrapper {
+//   display: flex;
+//   flex-direction: column;
+//   justify-content: center; /* center by default */
+//   height: 100%;
+//   transition: justify-content 0.2s ease;
+// }
 

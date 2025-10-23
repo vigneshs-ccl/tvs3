@@ -192,7 +192,7 @@ hr.dashed {
 .custom-modal-spacing {
   border-radius: 0.8rem !important;
   overflow: hidden;
-  padding: 0.75rem 1rem !important;
+  padding: 0.5rem 1rem 0rem 1rem !important;
 
   .modal-header {
     padding-bottom: 0.25rem !important;
@@ -207,6 +207,10 @@ hr.dashed {
   .modal-body {
     padding-top: 0.1rem !important;
   }
+}
+
+.modal-body{
+  padding-bottom: 0.5rem!important;
 }
 
 .custom-modal-header h6 {

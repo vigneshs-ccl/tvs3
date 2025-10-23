@@ -1,5 +1,5 @@
 import { CommonModule, NgClass } from '@angular/common';
-import { Component, EventEmitter, Input, Output } from '@angular/core';
+import { Component,ElementRef, EventEmitter, Input, Output } from '@angular/core';
 @Component({
   selector: 'app-custom-modal',
   imports: [NgClass,CommonModule],
@@ -10,15 +10,16 @@ export class CustomModal {
    @Input() isOpen = false;
   @Input() title = '';
   @Input() compliance?: string; // optional, since some modals show "Compliance: 90%"
-  @Input() size: 'sm' | 'md' | 'lg' | 'xl' = 'lg';
+  @Input() width: string = '';
+  @Input() size: 'sm' | 'md' | 'lg' | 'xl' | 'custom' = 'md';
   @Output() close = new EventEmitter<void>();
-  @Output() submit = new EventEmitter<void>();
+  // @Output() submit = new EventEmitter<void>();
+  
+
+  constructor(private elRef: ElementRef) {}
 
   closeModal() {
     this.close.emit();
   }
 
-  submitModal() {
-    this.submit.emit();
-  }
 }

@@ -1,1 +1,28 @@
 @use 'common' as *;
+
+.modal-custom {
+  max-width: 90%;   // default for small screens
+  width: auto;      // overridden by [ngStyle] if width is passed
+}
+
+/* Tablet: 768px+ */
+@media (min-width: 768px) {
+  .modal-custom {
+    max-width: 80%;
+  }
+}
+
+/* Desktop: 1200px+ */
+@media (min-width: 1200px) {
+  .modal-custom {
+    max-width: none;   // remove max-width restriction
+    width: 800px;      // desktop fixed width
+  }
+}
+
+/* Large screens: optional */
+@media (min-width: 1600px) {
+  .modal-custom {
+    width: 995px;      // wider for ultra-large screens
+  }
+}

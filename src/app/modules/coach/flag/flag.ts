@@ -1,6 +1,6 @@
 import { CommonModule } from '@angular/common';
 import { Component, ElementRef, HostListener, inject, ViewChild } from '@angular/core';
-import { FormsModule } from '@angular/forms';
+import { FormsModule, NgForm } from '@angular/forms';
 import { CustomModal } from '@app/components/custom-modal/custom-modal';
 import { Card } from '@app/interface/flag-card';
 import { FlagService } from '@app/core/services/flag/flag.service';
@@ -26,8 +26,10 @@ export class Flag {
   @ViewChild('dateInput1', { static: true }) dateInput!: ElementRef;
   @ViewChild('dropdownBtn', { static: true }) dropdownBtn!: ElementRef;
   @ViewChild('flagContainer', { static: false }) flagContainer!: ElementRef;
+  @ViewChild('flagForm') flagForm!: NgForm;
   selectedCard: Card | null = null;
   dropdownOpen = false;
+  leftColumnFlag = false;
   dropdownTop = 0;
   dropdownLeft = 0;
   dropdownWidth = 0;
@@ -82,16 +84,37 @@ export class Flag {
       unit: '(%)',
       value: 7.5,
     },
+    {
+      id: 7,
+      title: 'LDL',
+      unit: '(mg/dL)',
+      value: 110,
+    },
   ];
 
   openModal(card: Card) {
     this.selectedCard = card;
+    this.showModal = true;
+    globalThis.document.body.style.overflow = 'hidden';
+  }
+
+  openLeftFlagModal() {
+    this.selectedCard = null; // no card
     this.showModal = true;
   }
 
   closeModal() {
     this.showModal = false;
     this.selectedCard = null;
+    this.submitAttempted = false;
+
+    //  Reset form controls (clears ngModel + touched + dirty states)
+    this.flagForm?.resetForm();
+
+    //  Also reset dropdown and search state
+    this.searchTerm = '';
+    this.options.forEach((o) => (o.selected = false));
+    globalThis.document.body.style.overflow = '';
   }
 
   // dropdown toggle button
@@ -110,7 +133,7 @@ export class Flag {
 
   getSelectedText() {
     const selected = this.options.filter((o) => o.selected).map((o) => o.name);
-    return selected.length ? selected.join(', ') : 'Select options';
+    return selected.length ? selected.join(', ') : 'Select';
   }
 
   openNativeDatePicker() {
@@ -136,8 +159,11 @@ export class Flag {
   removeFlag(card: Card) {
     const flag = this.flagService.flags().find((f) => f.cardId === card.id);
     if (!flag) return;
-
     this.flagService.removeFlag(flag.id);
+  }
+
+  removeLeftColumnFlag() {
+    this.leftColumnFlag = false;
   }
 
   getFlagData(cardId: number) {
@@ -167,9 +193,28 @@ export class Flag {
   }
 
   //  MAIN SUBMIT FUNCTION
-  onSubmit() {
+  onSubmit(form: NgForm) {
     this.submitAttempted = true;
+
+    // For left column flag
+    if (
+      !this.selectedCard &&
+      !this.leftColumnFlag &&
+      this.flagForm.valid &&
+      this.description &&
+      this.selectedDate &&
+      this.isSendMailSelected
+    ) {
+      // Add left column flag
+      this.leftColumnFlag = true;
+
+      // reset form
+      this.closeModal();
+      return;
+    }
     if (!this.selectedCard) return;
+
+    if (form.invalid || !this.isSendMailSelected) return;
 
     // Stop submission if any field is invalid
     if (!this.description.trim() || !this.selectedDate || !this.isSendMailSelected) {
