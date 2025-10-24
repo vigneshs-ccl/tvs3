@@ -1,0 +1,229 @@
+<div class="d-flex flex-column flex-md-row py-cs-40 px-cs-30">
+  <!-- First column: fixed max width on md+ -->
+  <div class="left-column border me-md-4 mb-3 mb-md-0 d-flex gap-5 px-cs-5 py-cs-10">
+    <div>
+      <span>Employee name</span>
+      <!-- Tooltip for left column flag -->
+      <div *ngIf="leftColumnFlag" class="position-relative flag-tooltip-container ms-2">
+        <img src="./assets/icons/flag.svg" alt="flag" class="flag-icon" />
+        <div class="flag-tooltip">
+          <div class="text-bs-inter-medium-bright-red-14s-17l mb-1">
+            Due Date: {{ selectedDate }}
+          </div>
+          <div class="text-bs-inter-reg-dark-gray-13s-18l">
+            {{ description }}
+          </div>
+        </div>
+      </div>
+    </div>
+    <div
+      class="cursor add-icon-wrapper"
+      [ngClass]="leftColumnFlag ? 'remove' : 'add'"
+      (click)="leftColumnFlag ? removeLeftColumnFlag() : openLeftFlagModal()"
+    >
+      <img
+        [src]="leftColumnFlag ? './assets/icons/remove.svg' : './assets/icons/add-gray.svg'"
+        [alt]="leftColumnFlag ? 'remove' : 'add'"
+        class="add-icon"
+      />
+    </div>
+  </div>
+
+  <!-- Second column: takes remaining space -->
+  <div class="right-column d-flex flex-wrap gap-3">
+    @for (card of cardData; track card.id) {
+      <div class="d-flex flex-column justify-content-between custom-box px-cs-16 py-cs-20">
+        <div class="d-flex justify-content-between align-items-center">
+          <div class="d-flex gap-1 align-items-center">
+            <div class="text-bs-inter-medium-black-flag-16s-20l">{{ card.title }}</div>
+            <div class="text-bs-inter-medium-black-lg-12s-15l">{{ card.unit }}</div>
+
+            <!--  Conditionally show red flag if card has flag -->
+            <div *ngIf="hasFlag(card.id)" class="position-relative flag-tooltip-container">
+              <img
+                src="./assets/icons/flag.svg"
+                alt="flag"
+                class="flag-icon"
+                (mouseenter)="adjustTooltipPosition($event, card.id)"
+              />
+
+              <!-- Tooltip box -->
+              <div class="flag-tooltip">
+                <div class="text-bs-inter-medium-bright-red-14s-17l mb-1">
+                  Due Date: {{ getFlagData(card.id)?.date }}
+                </div>
+                <div class="text-bs-inter-reg-dark-gray-13s-18l">
+                  {{ getFlagData(card.id)?.description }}
+                </div>
+              </div>
+            </div>
+          </div>
+          <div
+            class="cursor add-icon-wrapper"
+            [ngClass]="hasFlag(card.id) ? 'remove' : 'add'"
+            (click)="hasFlag(card.id) ? removeFlag(card) : openModal(card)"
+          >
+            <img
+              [src]="hasFlag(card.id) ? './assets/icons/remove.svg' : './assets/icons/add-gray.svg'"
+              [alt]="hasFlag(card.id) ? 'remove' : 'add'"
+              class="add-icon"
+            />
+          </div>
+        </div>
+        @if (card.value < 100) {
+          <div class="text-center text-bs-inter-medium-green-light-44s-54l">
+            {{ card.value }}
+          </div>
+        } @else {
+          <div class="text-center text-bs-inter-medium-yellow-44s-54l">
+            {{ card.value }}
+          </div>
+        }
+        <div class="text-center">
+          <div class="text-bs-roboto-reg-black-lite-14s-17l">Last updated on</div>
+          <div class="text-bs-roboto-reg-black-lg-12s-15l">dd-mm-yyyy</div>
+        </div>
+      </div>
+    }
+  </div>
+</div>
+
+<app-custom-modal
+  [isOpen]="showModal"
+  [title]="
+    selectedCard
+      ? 'Add Flag for <span class=\'text-bs-inter-medium-black-flag-16s-20l\'>' +
+        selectedCard.title +
+        '</span> <span class=\'text-bs-inter-medium-black-lg-12s-15l\'>' +
+        selectedCard.unit +
+        '</span>'
+      : 'Add Flag'
+  "
+  [size]="'custom'"
+  class="flag-modal"
+  (close)="closeModal()"
+>
+  <!-- Fixed height modal body -->
+  <form #flagForm="ngForm" (ngSubmit)="onSubmit(flagForm)">
+    <div class="flag-body">
+      <div>
+        <label class="text-bs-inter-reg-grey-medium-light-14s-17l my-cs-8">Flag Description</label>
+        <textarea
+          class="form-control custom-textarea"
+          rows="4"
+          maxlength="250"
+          [(ngModel)]="description"
+          name="description"
+          #descriptionRef="ngModel"
+          required
+        ></textarea>
+        <div
+          class="invalid-feedback d-block"
+          *ngIf="descriptionRef.invalid && (descriptionRef.touched || submitAttempted)"
+        >
+          Please enter a description.
+        </div>
+      </div>
+
+      <div class="container my-3">
+        <div class="row g-3">
+          <!-- First column: Date -->
+          <div class="col-12 col-lg-4 px-0">
+            <label for="dateInput1" class="text-bs-inter-reg-grey-medium-light-14s-17l my-cs-8">
+              Due Date
+            </label>
+
+            <!-- Input + icon wrapper -->
+            <div class="input-icon-wrapper">
+              <input
+                #dateInput1
+                type="date"
+                id="dateInput1"
+                class="form-control text-bs-inter-reg-medium-gray-14s-17l px-cs-16 py-cs-12 custom-date-input rounded-5 shadow-sm w-100"
+                [min]="today"
+                placeholder="DD/MM/YYYY"
+                [(ngModel)]="selectedDate"
+                name="selectedDate"
+                (click)="openNativeDatePicker()"
+                #dateRef="ngModel"
+                required
+              />
+              
+              <img
+                src="./assets/icons/calander.svg"
+                alt="calendar"
+                class="calendar-icon"
+                (click)="openNativeDatePicker()"
+              />
+            </div>
+
+            <!-- Validation text outside the wrapper -->
+            <div
+              class="invalid-feedback d-block"
+              *ngIf="dateRef.invalid && (dateRef.touched || submitAttempted)"
+            >
+              Please select a date.
+            </div>
+          </div>
+
+          <!-- Second column: Dropdown -->
+          <div class="col-12 col-lg-4 px-0 px-lg-3">
+            <label
+              for="dateInput2"
+              class="text-bs-inter-reg-grey-medium-light-14s-17l px-0 mx-lg-2 my-cs-8"
+            >
+              Send mail to
+            </label>
+
+            <div class="dropdown custom-dropdown w-100" [class.show]="dropdownOpen">
+              <button
+                #dropdownBtn
+                class="btn btn-white border rounded-5 text-bs-inter-reg-medium-gray-14s-17l px-cs-16 py-cs-12 w-100 d-flex justify-content-between align-items-center"
+                type="button"
+                (click)="toggleDropdown()"
+              >
+                {{ getSelectedText() }}
+                <img src="./assets/icons/dropdown.svg" alt="dropdown" width="16" height="16" />
+              </button>
+
+              <div class="dropdown-menu w-100" [class.show]="dropdownOpen">
+                <div class="mb-2 px-2">
+                  <input
+                    type="text"
+                    class="form-control form-control-sm"
+                    placeholder="Search..."
+                    [(ngModel)]="searchTerm"
+                    name="searchTerm"
+                  />
+                </div>
+
+                <div *ngFor="let option of filteredOptions()" class="dropdown-item">
+                  <div class="form-check">
+                    <input
+                      class="form-check-input"
+                      type="checkbox"
+                      [id]="option.id"
+                      [(ngModel)]="option.selected"
+                      [name]="'option_' + option.id"
+                    />
+                    <label class="form-check-label" [for]="option.id">{{ option.name }}</label>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="invalid-feedback d-block" *ngIf="!isSendMailSelected && submitAttempted">
+              Please select at least one recipient.
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </form>
+  <!-- Footer stays at bottom -->
+  <div class="modal-footer justify-content-lg-end justify-content-center flex-shrink-0">
+    <button type="submit" class="btn text-bs-inter-medium-white-16s-20l rounded-pill py-cs-10 px-cs-24 custom-submit-btn" (click)="flagForm.ngSubmit.emit()">
+      Submit
+    </button>
+  </div>
+</app-custom-modal>

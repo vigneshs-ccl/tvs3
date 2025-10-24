@@ -149,6 +149,51 @@
   padding-right: 0rem!important;
 }
 
+.date-placeholder {
+  position: absolute;
+  top: 50%;
+  left: 1rem; /* align with input text */
+  transform: translateY(-50%);
+  color: #999; /* subtle gray like placeholder */
+  font-size: 14px;
+  pointer-events: none; /* allow clicks to go through */
+  text-transform: uppercase; /* show as DD/MM/YYYY */
+}
+
+.custom-date-input {
+  width: 100%;
+  cursor: pointer;
+  border-radius: 10px;
+  border: 1px solid #ccc;
+  height: 42px;
+  text-transform: uppercase;
+
+  // --- hide default placeholder text ---
+  &::-webkit-datetime-edit {
+    color: transparent; /* hide default yyyy-mm-dd */
+  }
+
+  // --- when user selects a date, show it ---
+  &:focus,
+  &:valid {
+    &::-webkit-datetime-edit {
+      color: #000; /* black or your preferred text color */
+    }
+  }
+
+  // --- hide unwanted native icons ---
+  &::-webkit-inner-spin-button,
+  &::-webkit-clear-button {
+    display: none;
+  }
+
+  &::-webkit-calendar-picker-indicator {
+    opacity: 1;
+    cursor: pointer;
+  }
+}
+
+
 
 /*  Responsive for smaller devices */
 @media (max-width: 768px) {
@@ -254,12 +299,4 @@
   }
 }
 
-
-// .flag-modal-wrapper {
-//   display: flex;
-//   flex-direction: column;
-//   justify-content: center; /* center by default */
-//   height: 100%;
-//   transition: justify-content 0.2s ease;
-// }
 

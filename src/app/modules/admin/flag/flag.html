@@ -141,12 +141,14 @@
                 id="dateInput1"
                 class="form-control text-bs-inter-reg-medium-gray-14s-17l px-cs-16 py-cs-12 custom-date-input rounded-5 shadow-sm w-100"
                 [min]="today"
+                placeholder="DD/MM/YYYY"
                 [(ngModel)]="selectedDate"
                 name="selectedDate"
                 (click)="openNativeDatePicker()"
                 #dateRef="ngModel"
                 required
               />
+              
               <img
                 src="./assets/icons/calander.svg"
                 alt="calendar"
