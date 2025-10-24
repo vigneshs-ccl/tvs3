@@ -66,6 +66,8 @@ $props: (
   "p-cs": padding,
   "pe-cs": padding-right,
   "ps-cs": padding-left,
+  "pt-cs": padding-top,
+  "pb-cs": padding-bottom,
   "px-cs":(
     padding-left,
     padding-right
@@ -83,6 +85,7 @@ $props: (
     margin-left,
     margin-right,
   ),
+  "mt-cs": margin-top,
   "mb-cs": margin-bottom,
   "me-cs": margin-right,
   "ms-cs": margin-left,

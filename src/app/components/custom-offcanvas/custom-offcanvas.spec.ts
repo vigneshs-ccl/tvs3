@@ -1,18 +1,18 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { Example } from './example';
+import { CustomOffcanvas } from './custom-offcanvas';
 
-describe('Example', () => {
-  let component: Example;
-  let fixture: ComponentFixture<Example>;
+describe('CustomOffcanvas', () => {
+  let component: CustomOffcanvas;
+  let fixture: ComponentFixture<CustomOffcanvas>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [Example]
+      imports: [CustomOffcanvas]
     })
     .compileComponents();
 
-    fixture = TestBed.createComponent(Example);
+    fixture = TestBed.createComponent(CustomOffcanvas);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

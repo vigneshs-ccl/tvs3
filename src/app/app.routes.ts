@@ -5,6 +5,7 @@ import { Feedback } from './modules/employee/feedback/feedback';
 import { History } from './modules/employee/history/history';
 import { Flag } from './modules/admin/flag/flag';
 import { CoachFlag } from './modules/coach/coach-flag/coach-flag';
+import { Profile } from './modules/employee/profile/profile';
 
 export const routes: Routes = [
   {
@@ -47,12 +48,16 @@ export const routes: Routes = [
     component: CoachFlag,
   },
   {
+    path: 'employee/profile',
+    component: Profile,
+  },
+  {
     path: '',
-    redirectTo: '/flag',
+    redirectTo: '/employee/profile',
     pathMatch: 'full',
   },
   {
     path: '**',
-    redirectTo: '/flag',
+    redirectTo: '/employee/profile',
   },
 ];

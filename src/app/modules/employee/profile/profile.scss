@@ -1,0 +1,25 @@
+.header {
+  background-color: #5B2AE3;
+  height: 48px;
+
+  .profile-img {
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    // object-fit: cover;
+  }
+}
+
+
+.row-cols-2 {
+  // vertical spacing between each row = 16px
+  .col + .col {
+    // margin-top: 16px; // gives 16px between label-value pairs
+  }
+
+  // make left column same width as right
+  .col {
+    display: flex;
+    align-items: center;
+  }
+}

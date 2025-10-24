@@ -1,0 +1,33 @@
+<div
+  #offcanvasRef
+  class="offcanvas offcanvas-end custom-offcanvas"
+  tabindex="-1"
+  [id]="id"
+  [attr.aria-labelledby]="id + 'Label'"
+>
+  <!-- Top image with profile and logout button -->
+  <div class="offcanvas-image-wrapper position-relative">
+    <img src="assets/icons/profile-bg.png" alt="Offcanvas Image" class="offcanvas-image" />
+    <div class="top-actions d-flex justify-content-between align-items-center px-cs-16 py-cs-10">
+      <!-- Profile image -->
+      <img src="assets/images/female.svg" alt="Profile" class="profile-image" />
+
+      <!-- Logout button -->
+      <button class="btn logout-btn px-cs-18 py-cs-8 text-bs-roboto-medium-purple-14s-17l">
+        Logout
+      </button>
+    </div>
+  </div>
+  <div class="offcanvas-body">
+    <ng-content></ng-content>
+  </div>
+
+  <div class="offcanvas-footer text-end px-cs-24">
+    <button
+      class="px-cs-24 py-cs-10 close-btn text-bs-inter-medium-purple-16s-20l"
+      (click)="close()"
+    >
+      Close
+    </button>
+  </div>
+</div>

@@ -1,1 +1,69 @@
-<p>profile works!</p>
+<header class="header d-flex align-items-center justify-content-between py-cs-6 px-cs-24">
+  <div
+    class="text-bs-inter-b-white-14s-17l text-md-bs-inter-b-white-18s-21l text-lg-bs-inter-b-white-21s-25l"
+  >
+    <!-- Title text goes here -->
+    My Health Index
+  </div>
+
+  <div class="header-profile">
+    <img
+      src="./assets/images/female.svg"
+      alt="Profile"
+      class="profile-img"
+      (click)="offcanvas.open()"
+    />
+  </div>
+</header>
+
+<!-- Custom Offcanvas -->
+<app-custom-offcanvas #offcanvas>
+  <!-- You can pass any content here -->
+  <div class="ps-cs-16 py-cs-16">
+    <div class="d-flex align-items-center">
+      <div class="text-bs-inter-medium-black-mid-16s-20l me-1">Coach Name</div>
+      <div class="small d-flex align-items-center">
+        <span class="text-bs-inter-medium-yellow-15s-19l">4</span>
+        <img src="./assets/icons/rating-star.svg" alt="rating star" class="rating-star-icon" />
+      </div>
+    </div>
+    <div class="text-bs-roboto-reg-grey-dark-13s-18l">ID: 2323423</div>
+
+    <div class="pt-cs-16 mt-cs-16 pb-cs-10 ps-cs-14 pe-cs-8">
+      <div class="text-bs-inter-medium-pure-black-14s-17l">  
+      General Details
+      </div>
+        <div class="row row-cols-2 pt-cs-16 gx-0 gy-3 align-items-center">
+        <!-- Left column: labels -->
+        <div class="col text-bs-roboto-reg-light-black-12s-15l text-end">
+          Mail ID
+        </div>
+        <div class="col text-bs-roboto-reg-blk-13s-18l text-start">
+          Name@tvsmotor.com
+        </div>
+
+        <div class="col text-bs-roboto-reg-light-black-12s-15l text-end">
+          DOB
+        </div>
+        <div class="col text-bs-roboto-reg-blk-13s-18l text-start">
+          24-05-1998
+        </div>
+
+        <div class="col text-bs-roboto-reg-light-black-12s-15l text-end">
+          Gender
+        </div>
+        <div class="col text-bs-roboto-reg-blk-13s-18l text-start">
+          Male
+        </div>
+
+        <div class="col text-bs-roboto-reg-light-black-12s-15l text-end">
+          Location
+        </div>
+        <div class="col text-bs-roboto-reg-blk-13s-18l text-start">
+          Hosur
+        </div>
+      </div>
+
+    </div>
+  </div>
+</app-custom-offcanvas>
