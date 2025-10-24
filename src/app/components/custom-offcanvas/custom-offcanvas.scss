@@ -42,9 +42,9 @@
   box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
   top: var(--canvas-top, 48px);
   height: auto !important;
-  // max-height: calc(100vh - var(--canvas-top, 48px));
+  max-height: calc(100vh - var(--canvas-top, 48px));
   padding-bottom: 10px;
-  margin-bottom: 200px;
+  margin-bottom: 100px;
   border-bottom: 1px solid #e0e0e0;
   border-top-left-radius: 12px;
   border-bottom-left-radius: 12px;
